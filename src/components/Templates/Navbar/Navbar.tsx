@@ -146,22 +146,11 @@ const Navbar = (props: any) => {
 
     const navLinks = [
         { title: `Accueil`, path: `/` },
-        { title: `Account`, path: `/account` },
-        { title: `Database`, path: `/library` },
-        // { title: `Highlights`), path: `/highlights` },
-        // { title: `Live score`), path: `/livescore` },
-        { title: `Bonus`, path: `/bonus` },
-        // { title: `Conseils`), path: `/conseils` },
+        { title: `Mon compte`, path: `/account` },
     ]
 
     const navLinksPhone = [
         { title: `Accueil`, path: `/` },
-        { title: `Prédictions de l'IA`, path: `/pronos` },
-        { title: `Database`, path: `/library` },
-        // { title: `Highlights`), path: `/highlights` },
-        // { title: `Live score`), path: `/livescore` },
-        { title: `Bonus`, path: `/bonus` },
-        // { title: `Conseils`), path: `/conseils` },
         { title: `Mon compte`, path: `/account` },
     ]
 
