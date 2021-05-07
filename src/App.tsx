@@ -23,6 +23,12 @@ import { ThemeProvider } from "@material-ui/styles";
 //   return false
 // })
 
+declare module '*.png'
+declare module '*.jpeg'
+declare module '*.jpg'
+declare module '*.svg'
+
+
 function App() {
   return (
     <ThemeProvider theme={theme}>

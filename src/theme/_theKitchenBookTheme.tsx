@@ -16,7 +16,7 @@ declare module "@material-ui/core/styles/createBreakpoints" {
 
 export const theme = createMuiTheme({
     typography: {
-        fontFamily: '"AvenirNext"',
+        fontFamily: '"Poppins"',
         fontSize: 14,
         fontWeightLight: 300,
         fontWeightRegular: 400,
@@ -52,6 +52,48 @@ export const theme = createMuiTheme({
         },
     },
     overrides: {
+        MuiTypography: {
+            h1: {
+                fontSize: `5rem`, //40px
+                fontWeight: "inherit",
+                lineHeight: "inherit"
+            },
+            h2: {
+                fontSize: `2rem`, //32px
+                fontWeight: "inherit",
+                lineHeight: "inherit"
+            },
+            h3: {
+                fontSize: `1.5625rem`, //25px
+                fontWeight: "inherit",
+                lineHeight: "inherit"
+            },
+            h4: {
+                fontSize: `1.375rem`, //22px
+                fontWeight: "inherit",
+                lineHeight: "inherit"
+            },
+            h5: {
+                fontSize: `1.125rem`, //18px
+                fontWeight: "inherit",
+                lineHeight: "inherit"
+            },
+            h6: {
+                fontSize: `1rem`, //16px
+                fontWeight: "inherit",
+                lineHeight: "inherit"
+            },
+            body1: {
+                fontSize: `.875rem`, //14px
+                fontWeight: "inherit",
+                lineHeight: "inherit"
+            },
+            body2: {
+                fontSize: `.75rem`, //12px
+                fontWeight: "inherit",
+                lineHeight: "inherit"
+            },
+        },
         MuiAppBar: {
             colorPrimary: {
                 color: "#2C630B",
