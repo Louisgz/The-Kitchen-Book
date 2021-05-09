@@ -1,5 +1,4 @@
-import { createMuiTheme, useTheme, Theme } from "@material-ui/core/styles";
-import { BreakpointOverrides } from "@material-ui/core/styles/createBreakpoints"
+import { createMuiTheme } from "@material-ui/core/styles";
 
 const defaultTheme = createMuiTheme();
 
@@ -98,6 +97,19 @@ export const theme = createMuiTheme({
             colorPrimary: {
                 color: "#2C630B",
                 backgroundColor: "white",
+            }
+        },
+        MuiButtonBase: {
+            root: {
+                transition: "all .2s ease-in-out !important",
+            }
+        },
+        MuiToolbar: {
+            gutters: {
+                [defaultTheme.breakpoints.down('xs')]: {
+                    paddingLeft: ".8rem",
+                    paddingRight: ".8rem",
+                }
             }
         },
     },

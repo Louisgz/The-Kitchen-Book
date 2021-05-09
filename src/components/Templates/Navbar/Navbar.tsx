@@ -1,22 +1,15 @@
 import React from 'react';
-import { AppBar, Button, Toolbar, List, ListItem, ListItemText, Container, MenuItem, Menu, CssBaseline, MenuList } from '@material-ui/core';
-import { makeStyles, Theme, useTheme, createStyles } from '@material-ui/core/styles';
+import { AppBar, Toolbar, List, ListItem, ListItemText, Container, MenuItem, Menu, CssBaseline } from '@material-ui/core';
+import { fade, makeStyles, Theme, useTheme, createStyles } from '@material-ui/core/styles';
 import { Link } from 'react-router-dom';
 import { useHistory } from 'react-router-dom';
 import Fade from '@material-ui/core/Fade';
 import IconButton from '@material-ui/core/IconButton';
-import Typography from '@material-ui/core/Typography';
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 import Box from '@material-ui/core/Box';
-import Grid from '@material-ui/core/Grid';
 import InputBase from '@material-ui/core/InputBase';
-import Badge from '@material-ui/core/Badge';
-import MenuRoundedIcon from '@material-ui/icons/Menu';
 import SearchIcon from '@material-ui/icons/Search';
 import AccountCircle from '@material-ui/icons/AccountCircle';
-import MailIcon from '@material-ui/icons/Mail';
-import NotificationsIcon from '@material-ui/icons/Notifications';
-import MoreIcon from '@material-ui/icons/MoreVert';
 import Logo from "../../../images/Misc/Logo.svg"
 import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
 import LeftDrawer from './LeftDrawer'
@@ -26,6 +19,11 @@ const useStyles = makeStyles((theme: Theme) =>
     createStyles({
         logo: {
             maxWidth: "60px",
+            marginRight: "1rem",
+            cursor: "pointer",
+            [theme.breakpoints.down('xs')]: {
+                maxWidth: "40px",
+            }
         },
         outsideContainer: {
             padding: 0,
@@ -39,7 +37,7 @@ const useStyles = makeStyles((theme: Theme) =>
                 padding: "15px 25px",
             },
             [theme.breakpoints.down('xs')]: {
-                padding: "9px 20px 5px",
+                padding: "10px 5px",
             },
         },
         navDisplayFlex: {
@@ -96,11 +94,54 @@ const useStyles = makeStyles((theme: Theme) =>
             fontWeight: 700,
             fontSize: 21
         },
-        iconUser: {
+        search: {
+            position: 'relative',
+            borderRadius: "2rem",
+            border: `2px solid rgba(44, 99, 11, 0.71)`,
+            flexGrow: 1,
+            maxWidth: "500px",
+            backgroundColor: fade(theme.palette.common.white, 0.15),
+            '&:hover': {
+                backgroundColor: fade(theme.palette.common.white, 0.25),
+            },
+            marginRight: theme.spacing(2),
+            marginLeft: 0,
+            width: '100%',
+            [theme.breakpoints.up('sm')]: {
+                marginLeft: theme.spacing(3),
+                width: 'auto',
+            },
+        },
+        searchIcon: {
+            padding: theme.spacing(0, 2),
+            height: '100%',
+            position: 'absolute',
+            pointerEvents: 'none',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+        },
+        iconButton: {
             fontSize: 40,
             padding: 0,
+            margin: "0 .5rem",
             "&:hover": {
+                backgroundColor: "transparent",
+                color: theme.palette.primary.dark,
                 boxShadow: "0 0 33px 0 rgb(255 255 255 / 11%)",
+            },
+        },
+        inputRoot: {
+            color: 'inherit',
+        },
+        inputInput: {
+            padding: theme.spacing(1, 1, 1, 0),
+            // vertical padding + font size from searchIcon
+            paddingLeft: `calc(1em + ${theme.spacing(4)}px)`,
+            transition: theme.transitions.create('width'),
+            width: '100%',
+            [theme.breakpoints.up('md')]: {
+                width: '20ch',
             },
         },
         popoverMenu: {
@@ -144,17 +185,6 @@ const Navbar = (props: any) => {
     // }
 
 
-    const navLinks = [
-        { title: `Accueil`, path: `/` },
-        { title: `Mon compte`, path: `/account` },
-    ]
-
-    const navLinksPhone = [
-        { title: `Accueil`, path: `/` },
-        { title: `Mon compte`, path: `/account` },
-    ]
-
-
     const handleMenu = (event: React.MouseEvent<HTMLElement>) => {
         setAnchorEl(event.currentTarget);
     };
@@ -167,48 +197,45 @@ const Navbar = (props: any) => {
         <Container className={classes.outsideContainer} maxWidth={false}>
             <Fade in={true} timeout={500}>
                 <Box position="relative">
-
                     <AppBar position="static" className={clsx(classes.appBar, transparent && classes.transparent)}>
                         <Toolbar style={{ zIndex: 1 }}>
-                            <Container className={classes.navbarDisplayFlex} maxWidth={false}>
-                                <img src={Logo} className={classes.logo} />
-                                <MenuList aria-labelledby="main navigation" className={classes.navDisplayFlex}>
-                                    {navLinks.map(({ title, path }, index) => (
-                                        path === pathname ? <div className={classes.outBox}>
-                                            <MenuItem key={index} component={Link} to={path} className={clsx(classes.linkText, activeMulticolor && classes.activeMulticolor)} selected={path === pathname}>
-                                                <Typography variant="body1">
-                                                    {title}
-                                                </Typography>
-                                            </MenuItem>
-                                        </div>
-                                            :
-                                            <MenuItem key={index} component={Link} to={path} className={clsx(classes.linkText, activeMulticolor && classes.activeMulticolor)} selected={path === pathname}>
-                                                <Typography variant="body1">
-                                                    {title}
-                                                </Typography>
-                                            </MenuItem>
-                                    ))}
-                                </MenuList>
-                                <Box display="flex">
-                                    <IconButton
-                                        aria-label="account of current user"
-                                        aria-controls="menu-appbar"
-                                        aria-haspopup="true"
-                                        className={classes.iconUser}
-                                        onClick={handleMenu}
-                                        // onClick={() => history.push('/account')}
-                                        color="inherit"
-                                    >
-                                        <AddCircleOutlineIcon
-                                            fontSize="large"
-                                        />
-                                    </IconButton>
-                                    <Box display="flex" alignItems="center">
+                            <Container className={classes.navbarDisplayFlex} >
+                                <img src={Logo} className={classes.logo} onClick={() => history.push('/')} />
+                                <div className={classes.search}>
+                                    <div className={classes.searchIcon}>
+                                        <SearchIcon />
+                                    </div>
+                                    <InputBase
+                                        placeholder="Je cherche..."
+                                        classes={{
+                                            root: classes.inputRoot,
+                                            input: classes.inputInput,
+                                        }}
+                                        inputProps={{ 'aria-label': 'search' }}
+                                    />
+                                </div>
+                                <Box display="flex" alignItems="center">
+                                    {
+                                        !mobile &&
+                                        <IconButton
+                                            aria-label="account of current user"
+                                            aria-controls="menu-appbar"
+                                            className={classes.iconButton}
+                                            onClick={() => history.push('/add-recipe')}
+                                            color="inherit"
+                                        >
+                                            <AddCircleOutlineIcon
+                                                fontSize="large"
+                                            />
+                                        </IconButton>
+                                    }
+                                    {
+                                        !mobile &&
                                         <IconButton
                                             aria-label="account of current user"
                                             aria-controls="menu-appbar"
                                             aria-haspopup="true"
-                                            className={classes.iconUser}
+                                            className={classes.iconButton}
                                             onClick={handleMenu}
                                             // onClick={() => history.push('/account')}
                                             color="inherit"
@@ -217,38 +244,38 @@ const Navbar = (props: any) => {
                                                 fontSize="large"
                                             />
                                         </IconButton>
-                                        <Menu
-                                            id="menu-appbar"
-                                            anchorEl={anchorEl}
-                                            anchorOrigin={{
-                                                vertical: 'bottom',
-                                                horizontal: 'right',
+                                    }
+                                    <Menu
+                                        id="menu-appbar"
+                                        anchorEl={anchorEl}
+                                        anchorOrigin={{
+                                            vertical: 'bottom',
+                                            horizontal: 'right',
+                                        }}
+                                        keepMounted
+                                        getContentAnchorEl={null}
+                                        transformOrigin={{
+                                            vertical: 'top',
+                                            horizontal: 'right',
+                                        }}
+                                        open={open}
+                                        onClose={handleClose}
+                                        className={classes.popoverMenu}
+                                    >
+                                        <MenuItem
+                                            onClick={() => {
+                                                handleClose()
+                                                history.push('/account')
                                             }}
-                                            keepMounted
-                                            getContentAnchorEl={null}
-                                            transformOrigin={{
-                                                vertical: 'top',
-                                                horizontal: 'right',
+                                        >Mon compte</MenuItem>
+                                        <MenuItem
+                                            onClick={() => {
+                                                handleClose()
                                             }}
-                                            open={open}
-                                            onClose={handleClose}
-                                            className={classes.popoverMenu}
-                                        >
-                                            <MenuItem
-                                                onClick={() => {
-                                                    handleClose()
-                                                    history.push('/account')
-                                                }}
-                                            >Mon compte</MenuItem>
-                                            <MenuItem
-                                                onClick={() => {
-                                                    handleClose()
-                                                }}
 
-                                            >Déconnexion</MenuItem>
-                                        </Menu>
-                                    </Box>
-                                    <LeftDrawer menu={navLinksPhone} />
+                                        >Déconnexion</MenuItem>
+                                    </Menu>
+                                    <LeftDrawer />
                                 </Box>
 
                             </Container>

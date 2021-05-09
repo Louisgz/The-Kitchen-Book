@@ -17,6 +17,7 @@ import Accueil_curry from "../../images/Accueil/Accueil_curry.png";
 const sections = [
   {
     image: Img_entrees,
+    path: "/entrees",
     imageAlt: "Entrées",
     colors: [
       "rgba(54, 121, 13, .77)",
@@ -29,7 +30,7 @@ const sections = [
         text:
           "Les haricots verts se dégustent pendant les mois de juin, juillet et août. En primeur ils se consomment en mai et septembre. Ils peuvent se déguster froids en salade, avec des poivrons, des anchois, des olives... Chauds, ils constituent un accompagnement savoureux et léger pour les viandes et les poissons.",
         link:
-          "https://cuisine.journaldesfemmes.fr/encyclopedie-produits/1955286-haricots-verts/",
+          "https://cutt.ly/QbOik7v",
       },
       {
         image: Accueil_poivrons,
@@ -42,6 +43,7 @@ const sections = [
   },
   {
     image: Img_plat,
+    path: "/plats",
     imageAlt: "Plat",
     colors: [
       "rgba(168, 41, 27, .81)",
@@ -67,6 +69,7 @@ const sections = [
   },
   {
     image: Img_desserts,
+    path: "/desserts",
     imageAlt: "Desserts",
     colors: [
       "rgba(153, 110, 160, 0.64)",
@@ -92,6 +95,7 @@ const sections = [
   },
   {
     image: Img_boissons,
+    path: "/boissons",
     imageAlt: "Boissons",
     colors: [
       "rgba(200, 35, 35, 0.78)",
@@ -117,6 +121,7 @@ const sections = [
   },
   {
     image: Img_sauces,
+    path: "/sauces",
     imageAlt: "Sauces",
     colors: [
       "rgba(193, 222, 238, 0.29)",
@@ -136,7 +141,7 @@ const sections = [
         alt: "Curry",
         text:
           "Vous reconnaîtrez un curry de bonne qualité si vous pouvez distinguer différents pigments de couleur correspondant aux épices contenues dedans. Un curry indien ne doit pas contenir de sel, les nombreuses épices donnent suffisamment de goût si elles sont mélangées en bonnes proportions. Le curry classique a une couleur allant du jaune à l'orangé, il existe également un curry rouge (à base de piments rouges) et un curry vert (à base d'herbes)",
-        link: "https://www.passeportsante.net/fr/Nutrition/EncyclopedieAliments/Fiche.aspx?doc=curry_nu",
+        link: "https://cutt.ly/5bOiu8U",
       },
     ],
   },

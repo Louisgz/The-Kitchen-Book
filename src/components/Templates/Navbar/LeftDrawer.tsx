@@ -5,7 +5,7 @@ import SwipeableDrawer from '@material-ui/core/SwipeableDrawer';
 import Button from '@material-ui/core/Button';
 import { List, ListItem, IconButton, Typography, useTheme, Theme, createStyles } from '@material-ui/core';
 import MenuRoundedIcon from '@material-ui/icons/Menu';
-
+import useMediaQuery from "@material-ui/core/useMediaQuery";
 import { Link } from 'react-router-dom'
 
 
@@ -34,13 +34,18 @@ const useStyles = makeStyles((theme: Theme) => createStyles({
     drawerLinkText: {
         textDecoration: `none`,
         textTransform: `capitalize`,
-        fontWeight: 700,
         color: "white",
         fontSize: "1.5rem",
         padding: `8px 18px`,
-        margin: "0 10px",
     },
     btnIcon: {
+        padding: 0,
+        margin: "0 .5rem",
+        color: theme.palette.primary.main,
+        "&:hover": {
+            backgroundColor: "transparent",
+            color: theme.palette.primary.dark,
+        },
         [theme.breakpoints.down('xs')]: {
             padding: '5px 0',
         }
@@ -50,22 +55,46 @@ const useStyles = makeStyles((theme: Theme) => createStyles({
     },
     drawerContainer: {
         "& > .MuiPaper-root": {
-            background: "#0b1847",
+            background: "#2C630B",
         }
     },
     menuItemText: {
-        fontSize: "1.5rem",
-        fontWeight: 500,
+        fontSize: "1.3rem",
+        fontWeight: 300,
         lineHeight: 3.5,
     }
 }));
 
 type Anchor = 'left' | 'top' | 'right' | 'bottom';
 
+const navLinks = [
+    { title: `accueil`, path: `/` },
+    { title: `Entrées`, path: `/entrees` },
+    { title: `plats`, path: `/plats` },
+    { title: `desserts`, path: `/desserts` },
+    { title: `boissons`, path: `/boissons` },
+    { title: `sauces`, path: `/sauces` },
+]
+
+const navLinksPhone = [
+    { title: `accueil`, path: `/` },
+    { title: `Ajouter une recette`, path: `/add-recipe` },
+    { title: `Entrées`, path: `/entrees` },
+    { title: `plats`, path: `/plats` },
+    { title: `desserts`, path: `/desserts` },
+    { title: `boissons`, path: `/boissons` },
+    { title: `sauces`, path: `/sauces` },
+    { title: `Mon compte`, path: `/account` },
+]
+
+
 export default function LeftDrawer(props: any) {
     const classes = useStyles();
     const theme = useTheme();
     const pathname = document.location.pathname;
+    const mobile = useMediaQuery(theme.breakpoints.down("xs"));
+
+    const menu = mobile ? navLinksPhone : navLinks
 
     const [state, setState] = React.useState({
         left: false,
@@ -73,8 +102,6 @@ export default function LeftDrawer(props: any) {
         top: false,
         right: false,
     });
-
-    const { menu } = props;
 
     const toggleDrawer = (anchor: Anchor, open: boolean) => (
         event: React.KeyboardEvent | React.MouseEvent,
@@ -119,20 +146,19 @@ export default function LeftDrawer(props: any) {
     );
 
     return (
-        <div>
+        <React.Fragment>
             {(['left'] as Anchor[]).map((anchor) => (
                 <React.Fragment key={anchor}>
-                    <Button onClick={toggleDrawer(anchor, true)}>
-                        <IconButton
-                            aria-label="open drawer"
-                            edge="start"
-                            className={classes.btnIcon}
-                        >
-                            <MenuRoundedIcon
-                                fontSize="large"
-                            />
-                        </IconButton>
-                    </Button>
+                    <IconButton
+                        aria-label="open drawer"
+                        edge="start"
+                        className={classes.btnIcon}
+                        onClick={toggleDrawer(anchor, true)}
+                    >
+                        <MenuRoundedIcon
+                            fontSize="large"
+                        />
+                    </IconButton>
                     <SwipeableDrawer
                         anchor={anchor}
                         open={state[anchor]}
@@ -145,6 +171,6 @@ export default function LeftDrawer(props: any) {
                 </React.Fragment>
             ))
             }
-        </div >
+        </React.Fragment >
     );
 }
