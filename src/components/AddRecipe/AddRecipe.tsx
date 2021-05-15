@@ -65,7 +65,7 @@ const AddRecipe = () => {
                     }}
                     variant="outlined"
                     onChange={(e) => {
-                        setPortions([{ quantity: e.target.value.split(" ", 2)[0] }, { measure: e.target.value.split(" ", 2)[0] }])
+                        setPortions([{ quantity: e.target.value.split(" ", 2)[0] }, { measure: e.target.value.split(" ", 2)[1] }])
                     }}
                 />
                 <TextField
