@@ -40,39 +40,6 @@ export default class Fire {
     return firebase.storage()
   }
 
-  /*
-  // Listen
-  static listen(ref, callback) {
-    return ref.onSnapshot((query) => {
-      const list = []
-      query.forEach((doc: any) => {
-        const data = doc.data() || {}
-        if (doc.exists) {
-          list.push({
-            id: doc.id,
-            ...data
-          })
-        }
-      });
-      callback(list)
-    })
-  }
-
-  // Listen document
-  static listenDoc(ref, callback) {
-    return ref.onSnapshot((doc: any) => {
-      if (doc.exists) {
-        callback({
-          id: doc.id,
-          ...doc.data()
-        })
-      } else {
-        callback(null)
-      }
-    })
-  }
-  */
-
   // Reauth
   static async reauthEmail(email: any, password: any) {
     const user = Fire.auth().currentUser

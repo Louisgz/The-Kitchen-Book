@@ -135,6 +135,7 @@ export default function LeftDrawer(props: any) {
                         to={item.path}
                         className={classes.drawerLinkText}
                         selected={item.path === pathname}
+                        key={index}
                     >
                         <Typography variant="body1" className={classes.menuItemText}>
                             {item.title}

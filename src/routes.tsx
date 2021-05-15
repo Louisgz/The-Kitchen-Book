@@ -1,5 +1,6 @@
 import HomeScreen from "./components/Home/HomeScreen"
 import Account from "./components/Account/Account"
+import AddRecipe from "./components/AddRecipe/AddRecipe"
 
 const routes: any[] = [
     {
@@ -9,6 +10,10 @@ const routes: any[] = [
     {
         path: '/account',
         component: Account
+    },
+    {
+        path: '/add-recipe',
+        component: AddRecipe,
     }
 ]
 
