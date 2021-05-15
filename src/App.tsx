@@ -10,7 +10,7 @@ import {
 import routes from './routes';
 import { theme } from "./theme/_theKitchenBookTheme";
 import { ThemeProvider } from "@material-ui/styles";
-
+import { Fire } from './services'
 // const userRoutes = routes.filter((item) => {
 //   if (item.both === true)
 //     return true
@@ -27,6 +27,8 @@ declare module '*.png'
 declare module '*.jpeg'
 declare module '*.jpg'
 declare module '*.svg'
+
+Fire.init()
 
 
 function App() {
