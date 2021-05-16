@@ -7,6 +7,7 @@ import { useHistory } from 'react-router-dom';
 import Fade from '@material-ui/core/Fade';
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 import Button from '@material-ui/core/Button';
+import Alert from '@material-ui/lab/Alert';
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -21,22 +22,46 @@ const AddRecipe = () => {
     const [title, setTitle] = useState("");
     const [portions, setPortions] = useState<any>([]);
     const [filters, setFilters] = useState<any>([]);
+    const [type, setType] = useState("");
     const [cooking_time, setCooking_time] = useState("")
     const [preparation_time, setPreparation_time] = useState("");
     const [difficulty, setDifficulty] = useState("");
     const [ingredients, setIngredients] = useState<any>([]);
-    const [recipe, setRecipe] = useState("");
-
+    const [recipe, setRecipe] = useState<any>([]);
+    const [alertSuccess, setAlertSuccess] = useState(false);
+    const [alertError, setAlertError] = useState(false);
     const recipesCollection = Fire.store().collection('Recipies');
 
-    const saveInfos = () => {
+    const saveInfos = async () => {
+
+        console.log(title)
+        console.log(portions)
+        console.log(type)
+        console.log(recipe)
+        console.log(difficulty)
+        console.log(ingredients)
+        console.log(recipe)
+        try {
+            const item = {
+                title: title,
+                type: type,
+                cooking_time: cooking_time,
+                preparation_time: preparation_time,
+                difficlty: difficulty,
+                portions: portions,
+                ingredients: ingredients,
+                recipe: recipe,
+            }
+            await recipesCollection.doc().set(item);
+            setAlertSuccess(true)
+        } catch (err) {
+            setAlertError(true)
+            console.log(err)
+        }
+
 
     }
 
-    useEffect(() => {
-        console.log(title)
-        console.log(portions)
-    })
 
 
     return (
@@ -78,6 +103,9 @@ const AddRecipe = () => {
                         shrink: true,
                     }}
                     variant="outlined"
+                    onChange={(e) => {
+                        setType(e.target.value)
+                    }}
                 />
                 <TextField
                     id="outlined-full-width"
@@ -89,6 +117,9 @@ const AddRecipe = () => {
                         shrink: true,
                     }}
                     variant="outlined"
+                    onChange={(e) => {
+                        setPreparation_time(e.target.value.split(" ", 2)[0])
+                    }}
                 />
                 <TextField
                     id="outlined-full-width"
@@ -100,6 +131,9 @@ const AddRecipe = () => {
                         shrink: true,
                     }}
                     variant="outlined"
+                    onChange={(e) => {
+                        setCooking_time(e.target.value.split(" ", 2)[0])
+                    }}
                 />
                 <TextField
                     id="outlined-full-width"
@@ -111,6 +145,9 @@ const AddRecipe = () => {
                         shrink: true,
                     }}
                     variant="outlined"
+                    onChange={(e) => {
+                        setDifficulty(e.target.value)
+                    }}
                 />
                 <TextField
                     id="outlined-full-width"
@@ -122,10 +159,13 @@ const AddRecipe = () => {
                         shrink: true,
                     }}
                     variant="outlined"
+                    onChange={(e) => {
+                        setIngredients(e.target.value.split("\n"))
+                    }}
                 />
                 <TextField
                     id="outlined-full-width"
-                    label="Recette"
+                    label="Recette (sautez une ligne entre chaque étape)"
                     placeholder="(sautez une ligne entre chaque étape)"
                     multiline
                     fullWidth
@@ -134,12 +174,23 @@ const AddRecipe = () => {
                         shrink: true,
                     }}
                     variant="outlined"
+                    onChange={(e) => {
+                        let recipesArray = e.target.value.split("\n")
+                        setRecipe(recipesArray)
+                    }}
                 />
                 <Button variant="contained" color="primary" onClick={saveInfos}>
                     Envoyer
                 </Button>
-
             </form>
+            {
+                alertSuccess &&
+                <Alert severity="success">La recette a bien été ajoutée, merci pour votre contribution !</Alert>
+            }
+            {
+                alertError &&
+                <Alert severity="error">Il y a eu une erreur lors de l'envoi du formulaire, rechargez la page et réessayez.</Alert>
+            }
         </Box>
     )
 }
