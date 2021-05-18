@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@firebase/storage": "^0.5.2",
     "@material-ui/core": "^4.11.4",
     "@material-ui/icons": "^4.11.2",
     "@material-ui/lab": "^4.0.0-alpha.58",
@@ -17,6 +18,8 @@
     "@types/react-dom": "^17.0.3",
     "@types/react-router": "^5.1.13",
     "@types/react-router-dom": "^5.1.7",
+    "axios": "^0.21.1",
+    "browser-image-compression": "^1.0.14",
     "firebase": "^8.6.1",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
