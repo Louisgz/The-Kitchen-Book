@@ -60,7 +60,7 @@ const HomeSection = (props: any) => {
                     descriptions.map((item: any, index: any) => {
                         return (
                             <Box width="100%" display="flex" flexDirection="column" margin="2rem 0">
-                                <Grid container xs={12} key={index} className={index % 2 != 0 ? classes.reverse : ""}>
+                                <Grid container xs={12} key={index} className={index % 2 !== 0 ? classes.reverse : ""}>
                                     <Grid item container justify="center" xs={12} sm={4}>
                                         <img src={item.image} alt={item.alt} className={classes.smallImg} />
                                     </Grid>

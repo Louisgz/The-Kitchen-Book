@@ -7,7 +7,7 @@ export default class Tools {
         return parts[parts.length - 1];
     }
     static isFileImage(name: any) {
-        const ext = this.getFileExtension(name)
+        const ext = this.getFileExtension(name).toLowerCase();
         return (ext === 'jpeg' || ext === 'jpg' ||
             ext === 'png' || ext === 'gif')
     }
@@ -26,6 +26,7 @@ export default class Tools {
         const imageFile = event.target.files[0]
         const maxSize = 0.5
         const name = imageFile.name
+        console.log(name)
         const size = imageFile.size
         if (!this.isFileImage(name))
             throw Error("Votre fichier doit être un PNG, JPG, JPEG ou GIF")

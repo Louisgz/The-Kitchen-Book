@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import Navbar from '../Templates/Navbar/Navbar'
 import { makeStyles, Theme, useTheme, createStyles } from '@material-ui/core/styles';
-import Box from '@material-ui/core/Box';
 import Grid from '@material-ui/core/Grid';
 import { useHistory } from 'react-router-dom';
 import Fade from '@material-ui/core/Fade';
