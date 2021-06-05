@@ -17,6 +17,8 @@ import Alert from '@material-ui/lab/Alert';
 import FormLabel from '@material-ui/core/FormLabel';
 import CustomizedRatings from './CustomizedRatings';
 import Navbar from '../Templates/Navbar/Navbar';
+import FormHelperText from '@material-ui/core/FormHelperText';
+import FormControl from '@material-ui/core/FormControl';
 
 // Images 
 import fond_pizza from 'images/Misc/fond_pizza.jpg'
@@ -28,18 +30,31 @@ import DeleteOutlineIcon from '@material-ui/icons/DeleteOutline';
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
-        ingredientsQuantity: {
-            width: "15%",
+        measure: {
+            width: "30%",
+            [theme.breakpoints.down('sm')]: {
+                width: "45%",
+            }
         },
-        ingredientsName: {
-            width: "75%",
+        ingredientName: {
+            width: "30%",
+            [theme.breakpoints.down('sm')]: {
+                width: "80%",
+            }
         },
         btnDelete: {
             width: "10%",
+            [theme.breakpoints.down('sm')]: {
+                width: "15%",
+            }
         },
         outbox: {
             padding: "5vw 10vw",
-            background: `url(${fond_pizza})`
+            background: `url(${fond_pizza})`,
+
+            [theme.breakpoints.down('sm')]: {
+                padding: "5vw",
+            }
         }
     })
 );
@@ -61,7 +76,7 @@ const AddRecipe = () => {
     const [cooking_time, setCooking_time] = useState("")
     const [preparation_time, setPreparation_time] = useState("");
     const [difficulty, setDifficulty] = useState("");
-    const [ingredients, setIngredients] = useState<any>([{ measure: "", name: "", id: randomID() }]);
+    const [ingredients, setIngredients] = useState<any>([{ quantity: "", unit: "", name: "", id: randomID() }]);
     const [picture, setPicture] = useState("");
     const [pictureExist, setPictureExist] = useState(false);
     const [recipe, setRecipe] = useState<any>([]);
@@ -95,7 +110,8 @@ const AddRecipe = () => {
             const newIngredients = [
                 ...prev,
                 {
-                    measure: "",
+                    quantity: "",
+                    unit: "",
                     name: "",
                     id: randomID()
                 }
@@ -103,8 +119,8 @@ const AddRecipe = () => {
             return newIngredients;
         })
     }
-    const removeIngredient = (index: number) => {
-        setIngredients((prev: any[]) => {
+    const removeIngredient = async (index: number) => {
+        await setIngredients((prev: any[]) => {
             let newIngredients = prev;
             newIngredients.splice(index, 1)
             return newIngredients;
@@ -116,120 +132,141 @@ const AddRecipe = () => {
     }, [ingredients])
 
     const saveInfos = async () => {
-        let allIngredients = document.querySelectorAll('.ingredientsQuantity')
-        setIngredients([])
-        // allIngredients.forEach((el, index) => {
-        //     var value = (el?.firstChild?.firstChild as HTMLInputElement).value;
-        //     setIngredients((prev: Array<any>) => {
-        //         let newIngredients = [...prev]
-        //         newIngredients[index] = { ...newIngredients[index], measure: value }
-        //         return newIngredients;
-        //     })
-        // })
-        console.log(allIngredients)
-        // try {
-        //     let fieldsFilled = true;
+        try {
+            let fieldsFilled = true;
 
-        //     var newDate = new Date();
-        //     const date = newDate.getTime()
-        //     var dd = String(newDate.getDate()).padStart(2, '0');
-        //     var mm = String(newDate.getMonth() + 1).padStart(2, '0'); //January is 0!
-        //     var yyyy = newDate.getFullYear();
-        //     var hh = newDate.getHours();
-        //     var min = newDate.getMinutes() < 10 ? newDate.getMinutes() + "0" : newDate.getMinutes();
-        //     var today = dd + '/' + mm + '/' + yyyy + " " + hh + ":" + min;
+            var newDate = new Date();
+            const date = newDate.getTime()
+            var dd = String(newDate.getDate()).padStart(2, '0');
+            var mm = String(newDate.getMonth() + 1).padStart(2, '0'); //January is 0!
+            var yyyy = newDate.getFullYear();
+            var hh = newDate.getHours();
+            var min = newDate.getMinutes() < 10 ? newDate.getMinutes() + "0" : newDate.getMinutes();
+            var today = dd + '/' + mm + '/' + yyyy + " " + hh + ":" + min;
 
-        //     var image = "";
+            var image = "";
 
-        //     if (picture !== "") {
-        //         image = await Fire.uploadFile('recipes/' + title.replace(/\s+/g, '-') + "_" + date + '.png', picture)
-        //         setPictureExist(true)
-        //     } else {
-        //         makeAlert("Merci de rentrer une belle image !", "error")
-        //         fieldsFilled = false;
-        //     }
+            if (picture !== "") {
+                image = await Fire.uploadFile('recipes/' + title.replace(/\s+/g, '-') + "_" + date + '.png', picture)
+                setPictureExist(true)
+            } else {
+                makeAlert("Merci de rentrer une belle image !", "error")
+                fieldsFilled = false;
+            }
 
-        //     if (title === "" || title === " ") {
-        //         makeAlert("Merci de renseigner un titre pour votre excellente recette !", "error")
-        //         setTitleHelper("Veuillez entrer un titre")
-        //         return;
-        //     } else {
-        //         setTitleHelper("")
-        //     }
+            if (title === "" || title === " ") {
+                makeAlert("Merci de renseigner un titre pour votre excellente recette !", "error")
+                setTitleHelper("Veuillez entrer un titre")
+                return;
+            } else {
+                setTitleHelper("")
+            }
 
-        //     if (!fieldsFilled) {
-        //         makeAlert("Merci de remplir tous les champs", "error")
-        //     }
+            if (!fieldsFilled) {
+                makeAlert("Merci de remplir tous les champs", "error")
+            }
 
-        //     const item = {
-        //         title: title,
-        //         introduction: introduction,
-        //         type: type,
-        //         cooking_time: cooking_time,
-        //         preparation_time: preparation_time,
-        //         difficlty: difficulty,
-        //         portions: portions,
-        //         ingredients: ingredients,
-        //         recipe: recipe,
-        //         image: image,
-        //         date: today,
-        //     }
-        //     console.log(item)
-        //     // await recipesCollection.doc().set(item);
-        //     makeAlert("Mmmh, votre recette a bien été ajoutée, merci pour votre contribution !", "success")
-        // } catch (err) {
-        //     makeAlert("Aïe... Il y a eu une erreur lors de l'envoi du formulaire, rechargez la page et réessayez.", "error")
-        //     console.log(err)
-        // }
+            const item = {
+                title: title,
+                introduction: introduction,
+                type: type,
+                cooking_time: cooking_time,
+                preparation_time: preparation_time,
+                difficlty: difficulty,
+                portions: portions,
+                ingredients: ingredients,
+                recipe: recipe,
+                image: image,
+                date: today,
+            }
+            console.log(item)
+            await recipesCollection.doc().set(item);
+            makeAlert("Mmmh, votre recette a bien été ajoutée, merci pour votre contribution !", "success")
+        } catch (err) {
+            makeAlert("Aïe... Il y a eu une erreur lors de l'envoi du formulaire, rechargez la page et réessayez.", "error")
+            console.log(err)
+        }
     }
 
     type newIngredientsProps = {
-        measure: string;
+        quantity: number;
+        unit: string;
         name: string;
         id: string;
         index: number;
     }
 
     function NewIngredient(props: newIngredientsProps) {
-        const { measure, name, id, index } = props;
+        const { quantity, unit, name, id, index } = props;
         return (
-            <Box width="100%" display="flex" flexDirection="row" alignItems="center" justifyContent="space-between" id={id}>
-                <TextField
-                    className={clsx(classes.ingredientsQuantity, 'ingredientsQuantity')}
-                    placeholder="Quantité : 75cl"
-                    margin="normal"
-                    InputLabelProps={{
-                        shrink: true,
-                    }}
-                    variant="outlined"
-                    defaultValue={measure}
-                    onBlur={(e) => {
-                        setIngredients((prev: any[]) => {
-                            let newIngredients = prev;
-                            newIngredients[index].measure = e.target.value;
-                            return newIngredients;
-                        })
+            <Box width="100%" display="flex" flexDirection="row" alignItems="center" justifyContent="space-between" flexWrap="wrap" id={id} marginBottom="1rem">
+                <FormControl
+                    className={classes.measure}
+                >
+                    <TextField
+                        placeholder="75"
+                        margin="normal"
+                        InputLabelProps={{
+                            shrink: true,
+                        }}
+                        variant="outlined"
+                        defaultValue={quantity}
+                        label="Quantité"
+                        type="number"
+                        onBlur={(e) => {
+                            setIngredients((prev: any[]) => {
+                                let newIngredients = prev;
+                                newIngredients[index].quantity = e.target.value;
+                                return newIngredients;
+                            })
 
-                    }}
-                />
-                <TextField
-                    className={clsx(classes.ingredientsName, 'ingredientsName')}
-                    placeholder="Ingrédient : lait"
-                    margin="normal"
-                    InputLabelProps={{
-                        shrink: true,
-                    }}
-                    variant="outlined"
-                    defaultValue={name}
-                    onBlur={(e) => {
-                        setIngredients((prev: any[]) => {
-                            let newIngredients = prev;
-                            newIngredients[index].name = e.target.value;
-                            return newIngredients;
-                        })
+                        }}
+                    />
+                </FormControl>
+                <FormControl
+                    className={classes.measure}
+                >
+                    <TextField
+                        placeholder="cl"
+                        margin="normal"
+                        InputLabelProps={{
+                            shrink: true,
+                        }}
+                        variant="outlined"
+                        defaultValue={unit}
+                        label="Unité"
+                        onBlur={(e) => {
+                            setIngredients((prev: any[]) => {
+                                let newIngredients = prev;
+                                newIngredients[index].unit = e.target.value;
+                                return newIngredients;
+                            })
 
-                    }}
-                />
+                        }}
+                    />
+                </FormControl>
+                <FormControl
+                    className={classes.ingredientName}
+                >
+                    <TextField
+                        placeholder="lait"
+                        margin="normal"
+                        InputLabelProps={{
+                            shrink: true,
+                        }}
+                        variant="outlined"
+                        label="Ingrédient"
+                        defaultValue={name}
+                        onBlur={(e) => {
+                            setIngredients((prev: any[]) => {
+                                let newIngredients = prev;
+                                newIngredients[index].name = e.target.value;
+                                return newIngredients;
+                            })
+
+                        }}
+                    />
+                </FormControl>
                 <IconButton aria-label="delete" size="small" disabled={index === 0} style={{ opacity: index === 0 ? "0" : "1" }}>
                     {
                         <DeleteOutlineIcon fontSize="large"
@@ -245,7 +282,7 @@ const AddRecipe = () => {
         <React.Fragment>
             <Navbar />
             <Box className={classes.outbox}>
-                <Box padding="2rem 3rem" bgcolor="rgba(255, 255, 255, .95)" maxWidth="1250px" margin="auto" borderRadius="2rem">
+                <Box padding={mobile ? "2rem" : "2rem 3rem"} bgcolor="rgba(255, 255, 255, .95)" maxWidth="1250px" margin="auto" borderRadius="2rem">
                     <form action="">
                         <div className="input-wrapper">
                             <FormLabel component="legend" style={{ margin: "1rem 0 .5rem" }} >Image de la recette :</FormLabel>
