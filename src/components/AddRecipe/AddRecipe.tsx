@@ -10,6 +10,7 @@ import {
 import { Fire, Tools } from "../../services";
 import { useHistory } from "react-router-dom";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
+import { NewItemsProps } from "../../Types/NewItemsProps";
 
 // COMPONENTS
 import Box from "@material-ui/core/Box";
@@ -90,25 +91,25 @@ const AddRecipe = () => {
     return "_" + Math.random().toString(36).substr(2, 9);
   };
 
-  const [title, setTitle] = useState("");
-  const [titleHelper, setTitleHelper] = useState("");
+  const [title, setTitle] = useState<string>("");
+  const [titleHelper, setTitleHelper] = useState<string>("");
   const [portions, setPortions] = useState<any>([]);
+  const [portionsHelper, setPortionsHelper] = useState<string>("");
   const [filters, setFilters] = useState<string[]>([]);
-  const [type, setType] = useState("");
-  const [cooking_time, setCooking_time] = useState("");
-  const [preparation_time, setPreparation_time] = useState("");
-  const [difficulty, setDifficulty] = useState("");
+  const [cookingTime, setCookingTime] = useState<number>();
+  const [preparationTime, setPreparationTime] = useState<number>();
+  const [difficulty, setDifficulty] = useState<number>();
   const [ingredients, setIngredients] = useState<any>([
     { quantity: "", unit: "", name: "", id: randomID() },
   ]);
-  const [picture, setPicture] = useState("");
-  const [pictureExist, setPictureExist] = useState(false);
-  const [recipe, setRecipe] = useState<any>([]);
+  const [picture, setPicture] = useState<string>("");
+  const [pictureExist, setPictureExist] = useState<boolean>(false);
+  const [recipe, setRecipe] = useState<string[]>([]);
   const [introduction, setIntroduction] = useState("");
-  const [alertText, setAlertText] = useState("");
+  const [alertText, setAlertText] = useState<string>("");
   const [alertType, setAlertType] = useState<any>("info");
-  const recipesCollection = Fire.store().collection("Recipies");
-  const [loading, setLoading] = useState(false);
+  const recipesCollection = Fire.store().collection("Recipes");
+  const [loading, setLoading] = useState<boolean>(false);
 
   const fileChanged = async (evt: any) => {
     try {
@@ -191,35 +192,46 @@ const AddRecipe = () => {
           "error"
         );
         setTitleHelper("Veuillez entrer un titre");
-        return;
+        fieldsFilled = false;
       } else {
         setTitleHelper("");
       }
 
-      if (!fieldsFilled) {
-        makeAlert("Merci de remplir tous les champs", "error");
+      if (portions.length === 0) {
+        makeAlert(
+          "Merci de renseigner la portion pour votre excellente recette !",
+          "error"
+        );
+        setPortionsHelper("Veuillez entrer la portion");
+        fieldsFilled = false;
+      } else {
+        setPortionsHelper("");
       }
 
-      const item = {
-        title: title,
-        introduction: introduction,
-        type: type,
-        filters: filters,
-        cooking_time: cooking_time,
-        preparation_time: preparation_time,
-        difficlty: difficulty,
-        portions: portions,
-        ingredients: ingredients,
-        recipe: recipe,
-        image: image,
-        date: today,
-      };
-      console.log(item);
-      await recipesCollection.doc().set(item);
-      makeAlert(
-        "Mmmh, votre recette a bien été ajoutée, merci pour votre contribution !",
-        "success"
-      );
+      if (!fieldsFilled) {
+        makeAlert("Merci de remplir tous les champs", "error");
+      } else {
+        const item: NewItemsProps = {
+          title: title,
+          introduction: introduction,
+          filters: filters,
+          cookingTime: cookingTime,
+          preparationTime: preparationTime,
+          difficulty: difficulty,
+          portions: portions,
+          ingredients: ingredients,
+          recipe: recipe,
+          image: image,
+          dateString: today,
+          date: new Date(),
+        };
+        console.log(item);
+        await recipesCollection.doc().set(item);
+        makeAlert(
+          "Mmmh, votre recette a bien été ajoutée, merci pour votre contribution !",
+          "success"
+        );
+      }
     } catch (err) {
       makeAlert(
         "Aïe... Il y a eu une erreur lors de l'envoi du formulaire, rechargez la page et réessayez.",
@@ -401,6 +413,7 @@ const AddRecipe = () => {
               InputLabelProps={{
                 shrink: true,
               }}
+              helperText={portionsHelper}
               variant="outlined"
               onChange={(e) => {
                 setPortions([
@@ -408,6 +421,7 @@ const AddRecipe = () => {
                   { measure: e.target.value.split(" ", 2)[1] },
                 ]);
               }}
+              error={!(portionsHelper === "" || portionsHelper === " ")}
             />
             <FormLabel component="legend" style={{ margin: "1rem 0 0" }}>
               Type
@@ -459,8 +473,10 @@ const AddRecipe = () => {
                 shrink: true,
               }}
               variant="outlined"
+              type="number"
               onChange={(e) => {
-                setPreparation_time(e.target.value.split(" ", 2)[0]);
+                e.target.value.length !== 0 &&
+                  setPreparationTime(parseInt(e.target.value.split(" ", 2)[0]));
               }}
             />
             <FormLabel component="legend" style={{ margin: "1rem 0 0" }}>
@@ -474,8 +490,10 @@ const AddRecipe = () => {
                 shrink: true,
               }}
               variant="outlined"
+              type="number"
               onChange={(e) => {
-                setCooking_time(e.target.value.split(" ", 2)[0]);
+                e.target.value.length !== 0 &&
+                  setCookingTime(parseInt(e.target.value.split(" ", 2)[0]));
               }}
             />
             <FormLabel component="legend" style={{ margin: "1rem 0" }}>
@@ -505,6 +523,11 @@ const AddRecipe = () => {
               color="primary"
               onClick={saveInfos}
               style={{ marginTop: "1rem" }}
+              onKeyDown={(e) => {
+                if (e.keyCode === 13) {
+                  saveInfos();
+                }
+              }}
             >
               Envoyer
             </Button>

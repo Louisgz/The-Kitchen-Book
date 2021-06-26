@@ -1,18 +1,21 @@
+// IMPORT GENERAL
 import React, { useState, useEffect } from "react";
-import Navbar from "../Templates/Navbar/Navbar";
 import {
   makeStyles,
   Theme,
   useTheme,
   createStyles,
 } from "@material-ui/core/styles";
-import Grid from "@material-ui/core/Grid";
-import Box from "@material-ui/core/Box";
 import { useHistory } from "react-router-dom";
 import Fade from "@material-ui/core/Fade";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
-import HomeSection from "../Templates/Sections/HomeSection";
 import { Fire } from "../../services";
+
+// IMPORT COMPONENTS
+import Navbar from "../Templates/Navbar/Navbar";
+import Grid from "@material-ui/core/Grid";
+import Box from "@material-ui/core/Box";
+import RecipePreview from "./RecipePreview";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -32,7 +35,7 @@ export default function RecipesPage() {
 
   const getRecipes = async () => {
     try {
-      const recipesRef = Fire.store().collection("Recipies");
+      const recipesRef = Fire.store().collection("Recipes");
       const recipes = await Fire.list(recipesRef);
       setRecipes(recipes);
     } catch (err) {
@@ -65,13 +68,7 @@ export default function RecipesPage() {
                 console.log(recipe);
                 return (
                   <Grid item xs={12} sm={6} md={4} key={recipe.id}>
-                    <Box
-                      width="100%"
-                      bgcolor="white"
-                      boxShadow=" 6px 8px 13px rgba(0, 0, 0, 0.12)"
-                    >
-                      {recipe.title}
-                    </Box>
+                    <RecipePreview {...recipe} />
                   </Grid>
                 );
               })}
