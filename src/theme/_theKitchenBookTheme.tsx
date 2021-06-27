@@ -3,114 +3,114 @@ import { createMuiTheme } from "@material-ui/core/styles";
 const defaultTheme = createMuiTheme();
 
 declare module "@material-ui/core/styles/createBreakpoints" {
-    interface BreakpointOverrides {
-        xs: true; // removes the `xs` breakpoint
-        sm: true;
-        md: true;
-        ml: true;
-        lg: true;
-        xl: true;
-    }
+  interface BreakpointOverrides {
+    xs: true; // removes the `xs` breakpoint
+    sm: true;
+    md: true;
+    ml: true;
+    lg: true;
+    xl: true;
+  }
 }
 
 export const theme = createMuiTheme({
-    typography: {
-        fontFamily: '"Poppins"',
-        fontSize: 14,
-        fontWeightLight: 300,
-        fontWeightRegular: 400,
-        fontWeightMedium: 500,
-        // fontWeightSemiBold: 600,
-        fontWeightBold: 700,
-        // fontWeightExtraBold: 900,
+  typography: {
+    fontFamily: '"Poppins"',
+    fontSize: 14,
+    fontWeightLight: 300,
+    fontWeightRegular: 400,
+    fontWeightMedium: 500,
+    // fontWeightSemiBold: 600,
+    fontWeightBold: 700,
+    // fontWeightExtraBold: 900,
+  },
+  breakpoints: {
+    values: {
+      xs: 0,
+      sm: 600,
+      md: 1100,
+      ml: 1300,
+      lg: 1500,
+      xl: 1920,
     },
-    breakpoints: {
-        values: {
-            xs: 0,
-            sm: 600,
-            md: 1100,
-            ml: 1300,
-            lg: 1500,
-            xl: 1920,
-        },
+  },
+  palette: {
+    primary: {
+      main: "#2C630B",
+      dark: "#3c4045",
+      light: "#4AA513",
     },
-    palette: {
-        primary: {
-            main: "#2C630B",
-            dark: "#3c4045",
-            light: "#4AA513",
-        },
-        secondary: {
-            main: "#fffa7e",
-            dark: "#d8d366",
-            light: "#fffddc",
-        },
-        text: {
-            primary: "#3c4045",
-            secondary: "#848ca5",
-        },
+    secondary: {
+      main: "#fffa7e",
+      dark: "#d8d366",
+      light: "#fffddc",
     },
-    overrides: {
-        MuiTypography: {
-            h1: {
-                fontSize: `5rem`, //40px
-                fontWeight: "inherit",
-                lineHeight: "inherit"
-            },
-            h2: {
-                fontSize: `2rem`, //32px
-                fontWeight: "inherit",
-                lineHeight: "inherit"
-            },
-            h3: {
-                fontSize: `1.5625rem`, //25px
-                fontWeight: "inherit",
-                lineHeight: "inherit"
-            },
-            h4: {
-                fontSize: `1.375rem`, //22px
-                fontWeight: "inherit",
-                lineHeight: "inherit"
-            },
-            h5: {
-                fontSize: `1.125rem`, //18px
-                fontWeight: "inherit",
-                lineHeight: "inherit"
-            },
-            h6: {
-                fontSize: `1rem`, //16px
-                fontWeight: "inherit",
-                lineHeight: "inherit"
-            },
-            body1: {
-                fontSize: `.875rem`, //14px
-                fontWeight: "inherit",
-                lineHeight: "inherit"
-            },
-            body2: {
-                fontSize: `.75rem`, //12px
-                fontWeight: "inherit",
-                lineHeight: "inherit"
-            },
-        },
-        MuiAppBar: {
-            colorPrimary: {
-                color: "#2C630B",
-                backgroundColor: "white",
-            }
-        },
-        MuiButtonBase: {
-            root: {
-                transition: "all .2s ease-in-out !important",
-            }
-        },
-        MuiToolbar: {
-            gutters: {
-                [defaultTheme.breakpoints.down('xs')]: {
-                    paddingLeft: ".8rem",
-                    paddingRight: ".8rem",
-                }
-            }
-        },
+    text: {
+      primary: "#3c4045",
+      secondary: "#848ca5",
     },
+  },
+  overrides: {
+    MuiTypography: {
+      h1: {
+        fontSize: `5rem`, //40px
+        fontWeight: "inherit",
+        lineHeight: "inherit",
+      },
+      h2: {
+        fontSize: `2rem`, //32px
+        fontWeight: "inherit",
+        lineHeight: "inherit",
+      },
+      h3: {
+        fontSize: `1.5625rem`, //25px
+        fontWeight: "inherit",
+        lineHeight: "inherit",
+      },
+      h4: {
+        fontSize: `1.375rem`, //22px
+        fontWeight: "inherit",
+        lineHeight: "inherit",
+      },
+      h5: {
+        fontSize: `1.125rem`, //18px
+        fontWeight: "inherit",
+        lineHeight: "inherit",
+      },
+      h6: {
+        fontSize: `1rem`, //16px
+        fontWeight: "inherit",
+        lineHeight: "inherit",
+      },
+      body1: {
+        fontSize: `.875rem`, //14px
+        fontWeight: "inherit",
+        lineHeight: "inherit",
+      },
+      body2: {
+        fontSize: `.75rem`, //12px
+        fontWeight: "inherit",
+        lineHeight: "inherit",
+      },
+    },
+    MuiAppBar: {
+      colorPrimary: {
+        color: "#2C630B",
+        backgroundColor: "white",
+      },
+    },
+    MuiButtonBase: {
+      root: {
+        transition: "all .2s ease-in-out !important",
+      },
+    },
+    MuiToolbar: {
+      gutters: {
+        [defaultTheme.breakpoints.down("xs")]: {
+          paddingLeft: ".8rem",
+          paddingRight: ".8rem",
+        },
+      },
+    },
+  },
 });

@@ -1,16 +1,11 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
-import {
-  BrowserRouter as Router,
-  Switch,
-  Route,
-  Link
-} from "react-router-dom";
-import routes from './routes';
+import React from "react";
+import logo from "./logo.svg";
+import "./App.css";
+import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
+import routes from "./routes";
 import { theme } from "./theme/_theKitchenBookTheme";
 import { ThemeProvider } from "@material-ui/styles";
-import { Fire } from './services'
+import { Fire } from "./services";
 // const userRoutes = routes.filter((item) => {
 //   if (item.both === true)
 //     return true
@@ -23,13 +18,12 @@ import { Fire } from './services'
 //   return false
 // })
 
-declare module '*.png'
-declare module '*.jpeg'
-declare module '*.jpg'
-declare module '*.svg'
+declare module "*.png";
+declare module "*.jpeg";
+declare module "*.jpg";
+declare module "*.svg";
 
-Fire.init()
-
+Fire.init();
 
 function App() {
   return (
@@ -37,12 +31,16 @@ function App() {
       <Router>
         <Switch>
           {routes.map((item, index) => (
-            <Route key={index} exact path={item.path} component={item.component} />
+            <Route
+              key={index}
+              exact
+              path={item.path}
+              component={item.component}
+            />
           ))}
         </Switch>
       </Router>
     </ThemeProvider>
-
   );
 }
 

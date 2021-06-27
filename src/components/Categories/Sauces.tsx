@@ -1,11 +1,7 @@
-import React from 'react'
+import React from "react";
 
 const Sauces = () => {
-    return (
-        <div>
+  return <div></div>;
+};
 
-        </div>
-    )
-}
-
-export default Sauces
+export default Sauces;

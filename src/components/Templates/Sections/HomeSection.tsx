@@ -106,7 +106,7 @@ const HomeSection = (props: any) => {
                     <Typography variant="h6">{item.text}</Typography>
                     <Box width="100%" display="flex" alignItems="flex-end">
                       <Typography variant="h6">
-                        Lire l'article en entier : &nbsp;
+                        Lire l&apos;article en entier : &nbsp;
                         <Link
                           href={item.link}
                           target="_blank"

@@ -21,4 +21,9 @@ module.exports = {
   rules: {
     indent: ["error", 2],
   },
+  settings: {
+    react: {
+      version: "detetect",
+    },
+  },
 };

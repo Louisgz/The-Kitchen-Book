@@ -1,4 +1,4 @@
-import Fire from "./fire.service"
-import Tools from "./tools.service"
+import Fire from "./fire.service";
+import Tools from "./tools.service";
 
-export { Fire, Tools }
+export { Fire, Tools };

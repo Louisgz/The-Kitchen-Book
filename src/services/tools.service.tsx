@@ -39,7 +39,9 @@ export default class Tools {
         const compressedFile = await imageCompression(imageFile, options);
         const url = URL.createObjectURL(compressedFile);
         return url;
-      } catch (err) {}
+      } catch (err) {
+        console.log(err);
+      }
       throw Error("Votre fichier est trop lourd: " + maxSize + " Mo maximum");
     }
 

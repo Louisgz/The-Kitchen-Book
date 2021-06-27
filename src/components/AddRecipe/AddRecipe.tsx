@@ -23,18 +23,11 @@ import Alert from "@material-ui/lab/Alert";
 import FormLabel from "@material-ui/core/FormLabel";
 import CustomizedRatings from "./CustomizedRatings";
 import Navbar from "../Templates/Navbar/Navbar";
-import FormHelperText from "@material-ui/core/FormHelperText";
 import FormControl from "@material-ui/core/FormControl";
-import Select from "@material-ui/core/Select";
-import Input from "@material-ui/core/Input";
-import InputLabel from "@material-ui/core/InputLabel";
-import MenuItem from "@material-ui/core/MenuItem";
-import ListItemText from "@material-ui/core/ListItemText";
-import Checkbox from "@material-ui/core/Checkbox";
-import Chip from "@material-ui/core/Chip";
 import FiltersInput from "./FiltersInput";
-// Images
-import fond_pizza from "images/Misc/fond_pizza.jpg";
+
+// Import images
+import fond_pizza from "../../images/Misc/fond_pizza.jpg";
 import IconButton from "@material-ui/core/IconButton";
 
 //Icons
@@ -346,87 +339,95 @@ const AddRecipe = () => {
   return (
     <React.Fragment>
       <Navbar />
-      <Box className={classes.outbox}>
-        <Box
-          padding={mobile ? "2rem" : "2rem 3rem"}
-          bgcolor="rgba(255, 255, 255, .95)"
-          maxWidth="1250px"
-          margin="auto"
-          borderRadius="2rem"
-        >
-          <form action="">
-            <div className="input-wrapper">
-              <FormLabel component="legend" style={{ margin: "1rem 0 .5rem" }}>
-                Image de la recette :
-              </FormLabel>
-              <div className="flex-row">
-                <div className="input-preview">
-                  {picture !== "" && (
-                    <img alt="Image" src={picture} style={{ maxWidth: 300 }} />
-                  )}
-                </div>
-                <div>
-                  <InputBase
-                    type="file"
-                    onChange={(evt) => fileChanged(evt)}
-                    disabled={loading}
-                    error={!pictureExist}
-                  />
+      <Fade in timeout={500}>
+        <Box className={classes.outbox}>
+          <Box
+            padding={mobile ? "2rem" : "2rem 3rem"}
+            bgcolor="rgba(255, 255, 255, .95)"
+            maxWidth="1250px"
+            margin="auto"
+            borderRadius="2rem"
+          >
+            <form action="">
+              <div className="input-wrapper">
+                <FormLabel
+                  component="legend"
+                  style={{ margin: "1rem 0 .5rem" }}
+                >
+                  Image de la recette :
+                </FormLabel>
+                <div className="flex-row">
+                  <div className="input-preview">
+                    {picture !== "" && (
+                      <img
+                        alt="Image"
+                        src={picture}
+                        style={{ maxWidth: 300 }}
+                      />
+                    )}
+                  </div>
+                  <div>
+                    <InputBase
+                      type="file"
+                      onChange={(evt) => fileChanged(evt)}
+                      disabled={loading}
+                      error={!pictureExist}
+                    />
+                  </div>
                 </div>
               </div>
-            </div>
-            <FormLabel component="legend" style={{ margin: "1rem 0 0" }}>
-              Titre
-            </FormLabel>
-            <TextField
-              placeholder="ex : Tarte aux fraises"
-              fullWidth
-              margin="normal"
-              InputLabelProps={{
-                shrink: true,
-              }}
-              variant="outlined"
-              onChange={(e) => setTitle(e.target.value)}
-              helperText={titleHelper}
-              error={!(titleHelper === "" || titleHelper === " ")}
-            />
-            <FormLabel component="legend" style={{ margin: "1rem 0 0" }}>
-              Introduction
-            </FormLabel>
-            <TextField
-              placeholder="ex : Acheter des escalopes de veau de qualité, et les demander très fines au boucher."
-              fullWidth
-              margin="normal"
-              InputLabelProps={{
-                shrink: true,
-              }}
-              variant="outlined"
-              onChange={(e) => setIntroduction(e.target.value)}
-            />
-            <FormLabel component="legend" style={{ margin: "1rem 0 0" }}>
-              Portions
-            </FormLabel>
-            <TextField
-              placeholder="ex : 6 verrines / 2 personnes"
-              fullWidth
-              margin="normal"
-              InputLabelProps={{
-                shrink: true,
-              }}
-              helperText={portionsHelper}
-              variant="outlined"
-              onChange={(e) => {
-                setPortions([
-                  { quantity: e.target.value.split(" ", 2)[0] },
-                  { measure: e.target.value.split(" ", 2)[1] },
-                ]);
-              }}
-              error={!(portionsHelper === "" || portionsHelper === " ")}
-            />
-            <FormLabel component="legend" style={{ margin: "1rem 0 0" }}>
-              Type
-            </FormLabel>
-            {/* <TextField
+              <FormLabel component="legend" style={{ margin: "1rem 0 0" }}>
+                Titre
+              </FormLabel>
+              <TextField
+                placeholder="ex : Tarte aux fraises"
+                fullWidth
+                margin="normal"
+                InputLabelProps={{
+                  shrink: true,
+                }}
+                variant="outlined"
+                onChange={(e) => setTitle(e.target.value)}
+                helperText={titleHelper}
+                error={!(titleHelper === "" || titleHelper === " ")}
+              />
+              <FormLabel component="legend" style={{ margin: "1rem 0 0" }}>
+                Introduction
+              </FormLabel>
+              <TextField
+                placeholder="ex : Acheter des escalopes de veau de qualité, et les demander très fines au boucher."
+                fullWidth
+                margin="normal"
+                InputLabelProps={{
+                  shrink: true,
+                }}
+                variant="outlined"
+                onChange={(e) => setIntroduction(e.target.value)}
+              />
+              <FormLabel component="legend" style={{ margin: "1rem 0 0" }}>
+                Portions
+              </FormLabel>
+              <TextField
+                placeholder="ex : 6 verrines / 2 personnes"
+                fullWidth
+                margin="normal"
+                InputLabelProps={{
+                  shrink: true,
+                }}
+                helperText={portionsHelper}
+                variant="outlined"
+                onChange={(e) => {
+                  setPortions([
+                    { quantity: e.target.value.split(" ", 2)[0] },
+                    { measure: e.target.value.split(" ", 2)[1] },
+                  ]);
+                }}
+                error={!(portionsHelper === "" || portionsHelper === " ")}
+              />
+              <FormLabel component="legend" style={{ margin: "1rem 0 0" }}>
+                Type
+              </FormLabel>
+              {/* <TextField
               placeholder="ex : dessert"
               fullWidth
               margin="normal"
@@ -438,107 +439,110 @@ const AddRecipe = () => {
                 setType(e.target.value);
               }}
             /> */}
-            <FiltersInput filters={filters} setFilters={setFilters} />
-            <FormLabel component="legend" style={{ margin: "1rem 0 0" }}>
-              Ingrédients
-            </FormLabel>
-            {ingredients.map((ingredient: any, index: number) => {
-              return (
-                <NewIngredient
-                  key={ingredient.id}
-                  {...ingredient}
-                  index={index}
-                />
-              );
-            })}
-            <IconButton
-              aria-label="delete"
-              size="small"
-              onKeyDown={(e) => {
-                if (e.keyCode === 13) {
-                  addIngredient();
-                }
-              }}
-            >
-              <AddIcon fontSize="inherit" onClick={addIngredient} />
-            </IconButton>
-            <FormLabel component="legend" style={{ margin: "1rem 0 0" }}>
-              Temps de préparation (minutes)
-            </FormLabel>
-            <TextField
-              placeholder="ex : 35"
-              fullWidth
-              margin="normal"
-              InputLabelProps={{
-                shrink: true,
-              }}
-              variant="outlined"
-              type="number"
-              onChange={(e) => {
-                e.target.value.length !== 0 &&
-                  setPreparationTime(parseInt(e.target.value.split(" ", 2)[0]));
-              }}
-            />
-            <FormLabel component="legend" style={{ margin: "1rem 0 0" }}>
-              Temps de cuisson (minutes)
-            </FormLabel>
-            <TextField
-              placeholder="ex : 10"
-              fullWidth
-              margin="normal"
-              InputLabelProps={{
-                shrink: true,
-              }}
-              variant="outlined"
-              type="number"
-              onChange={(e) => {
-                e.target.value.length !== 0 &&
-                  setCookingTime(parseInt(e.target.value.split(" ", 2)[0]));
-              }}
-            />
-            <FormLabel component="legend" style={{ margin: "1rem 0" }}>
-              Difficulté (sur 5)
-            </FormLabel>
-            <CustomizedRatings setDifficulty={setDifficulty} />
-            <FormLabel component="legend" style={{ margin: "1rem 0 0" }}>
-              Recette (sautez une ligne entre chaque étape)
-            </FormLabel>
-            <TextField
-              placeholder="Mélanger la farine et les oeufs pour former une pâte homogène. &#13;&#10;Faire cuire pendant 5 minutes.&#13;&#10;Régalez-vous !"
-              multiline
-              fullWidth
-              rows={8}
-              margin="normal"
-              InputLabelProps={{
-                shrink: true,
-              }}
-              variant="outlined"
-              onChange={(e) => {
-                const recipesArray = e.target.value.split("\n");
-                setRecipe(recipesArray);
-              }}
-            />
-            <Button
-              variant="contained"
-              color="primary"
-              onClick={saveInfos}
-              style={{ marginTop: "1rem" }}
-              onKeyDown={(e) => {
-                if (e.keyCode === 13) {
-                  saveInfos();
-                }
-              }}
-            >
-              Envoyer
-            </Button>
-          </form>
-          <Box position="fixed" bottom="10%" left="5%">
-            {alertText !== "" && alertText !== " " && (
-              <Alert severity={alertType}>{alertText}</Alert>
-            )}
+              <FiltersInput filters={filters} setFilters={setFilters} />
+              <FormLabel component="legend" style={{ margin: "1rem 0 0" }}>
+                Ingrédients
+              </FormLabel>
+              {ingredients.map((ingredient: any, index: number) => {
+                return (
+                  <NewIngredient
+                    key={ingredient.id}
+                    {...ingredient}
+                    index={index}
+                  />
+                );
+              })}
+              <IconButton
+                aria-label="delete"
+                size="small"
+                onKeyDown={(e) => {
+                  if (e.keyCode === 13) {
+                    addIngredient();
+                  }
+                }}
+              >
+                <AddIcon fontSize="inherit" onClick={addIngredient} />
+              </IconButton>
+              <FormLabel component="legend" style={{ margin: "1rem 0 0" }}>
+                Temps de préparation (minutes)
+              </FormLabel>
+              <TextField
+                placeholder="ex : 35"
+                fullWidth
+                margin="normal"
+                InputLabelProps={{
+                  shrink: true,
+                }}
+                variant="outlined"
+                type="number"
+                onChange={(e) => {
+                  e.target.value.length !== 0 &&
+                    setPreparationTime(
+                      parseInt(e.target.value.split(" ", 2)[0])
+                    );
+                }}
+              />
+              <FormLabel component="legend" style={{ margin: "1rem 0 0" }}>
+                Temps de cuisson (minutes)
+              </FormLabel>
+              <TextField
+                placeholder="ex : 10"
+                fullWidth
+                margin="normal"
+                InputLabelProps={{
+                  shrink: true,
+                }}
+                variant="outlined"
+                type="number"
+                onChange={(e) => {
+                  e.target.value.length !== 0 &&
+                    setCookingTime(parseInt(e.target.value.split(" ", 2)[0]));
+                }}
+              />
+              <FormLabel component="legend" style={{ margin: "1rem 0" }}>
+                Difficulté (sur 5)
+              </FormLabel>
+              <CustomizedRatings setDifficulty={setDifficulty} />
+              <FormLabel component="legend" style={{ margin: "1rem 0 0" }}>
+                Recette (sautez une ligne entre chaque étape)
+              </FormLabel>
+              <TextField
+                placeholder="Mélanger la farine et les oeufs pour former une pâte homogène. &#13;&#10;Faire cuire pendant 5 minutes.&#13;&#10;Régalez-vous !"
+                multiline
+                fullWidth
+                rows={8}
+                margin="normal"
+                InputLabelProps={{
+                  shrink: true,
+                }}
+                variant="outlined"
+                onChange={(e) => {
+                  const recipesArray = e.target.value.split("\n");
+                  setRecipe(recipesArray);
+                }}
+              />
+              <Button
+                variant="contained"
+                color="primary"
+                onClick={saveInfos}
+                style={{ marginTop: "1rem" }}
+                onKeyDown={(e) => {
+                  if (e.keyCode === 13) {
+                    saveInfos();
+                  }
+                }}
+              >
+                Envoyer
+              </Button>
+            </form>
+            <Box position="fixed" bottom="10%" left="5%">
+              {alertText !== "" && alertText !== " " && (
+                <Alert severity={alertType}>{alertText}</Alert>
+              )}
+            </Box>
           </Box>
         </Box>
-      </Box>
+      </Fade>
     </React.Fragment>
   );
 };

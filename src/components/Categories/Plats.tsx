@@ -1,11 +1,7 @@
-import React from 'react'
+import React from "react";
 
 const Plats = () => {
-    return (
-        <div>
+  return <div></div>;
+};
 
-        </div>
-    )
-}
-
-export default Plats
+export default Plats;
