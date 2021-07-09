@@ -13,9 +13,9 @@ import { Fire } from "../../services";
 
 // IMPORT COMPONENTS
 import Navbar from "../Templates/Navbar/Navbar";
-import Grid from "@material-ui/core/Grid";
-import Box from "@material-ui/core/Box";
+import { Grid, Box, Typography } from "@material-ui/core";
 import RecipePreview from "./RecipePreview";
+import FilterListIcon from "@material-ui/icons/FilterList";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -26,12 +26,27 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 );
 
+const getQueryParams = (param: string) => {
+  return unescape(
+    decodeURIComponent(window.location.search).replace(
+      new RegExp(
+        "^(?:.*[&\\?]" +
+          escape(param).replace(/[.+*]/g, "\\$&") +
+          "(?:\\=([^&]*))?)?.*$",
+        "i"
+      ),
+      "$1"
+    )
+  );
+};
+
 export default function RecipesPage() {
   const classes = useStyles();
   const theme = useTheme();
   const history = useHistory();
   const mobile = useMediaQuery(theme.breakpoints.down("xs"));
   const [recipes, setRecipes] = useState<any>(null);
+  const query = getQueryParams("q");
 
   const getRecipes = async () => {
     try {
@@ -51,7 +66,7 @@ export default function RecipesPage() {
 
   return (
     <Fade in timeout={500}>
-      <>
+      <Box width="100vw" height="auto" bgcolor="#fafafa">
         <Grid item xs={12}>
           <Navbar />
         </Grid>
@@ -61,20 +76,59 @@ export default function RecipesPage() {
             item
             xs={12}
             spacing={3}
-            style={{ marginTop: "2rem" }}
+            style={{ maxWidth: "1050px", margin: "2rem auto 0" }}
+          >
+            <Box
+              display="flex"
+              justifyContent="space-between"
+              width="100%"
+              alignItems="center"
+            >
+              <Box display="flex" flexDirection="column">
+                <Typography variant="h4">{query}</Typography>
+                <Typography variant="h6" component={"span"}>
+                  <Box color={theme.palette.text.secondary}>
+                    {recipes?.length} recettes
+                  </Box>
+                </Typography>
+              </Box>
+              <Box
+                style={{ cursor: "pointer" }}
+                display="flex"
+                alignItems="center"
+              >
+                <FilterListIcon />
+                <Typography
+                  variant="h6"
+                  component={"span"}
+                  style={{ color: theme.palette.text.secondary }}
+                >
+                  <Box color={theme.palette.text.secondary} marginLeft=".75rem">
+                    Filtrer les résultats
+                  </Box>
+                </Typography>
+              </Box>
+            </Box>
+          </Grid>
+          <Grid
+            container
+            item
+            xs={12}
+            spacing={3}
+            style={{ maxWidth: "1100px", margin: "3rem auto" }}
           >
             {recipes &&
               recipes.map((recipe: any) => {
                 console.log(recipe);
                 return (
-                  <Grid item xs={12} sm={6} md={4} key={recipe.id}>
+                  <Grid item xs={12} sm={4} md={3} key={recipe.id}>
                     <RecipePreview {...recipe} />
                   </Grid>
                 );
               })}
           </Grid>
         </Grid>
-      </>
+      </Box>
     </Fade>
   );
 }

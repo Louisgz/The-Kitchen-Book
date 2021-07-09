@@ -90,13 +90,17 @@ const AddRecipe = () => {
   const [portionsHelper, setPortionsHelper] = useState<string>("");
   const [filters, setFilters] = useState<string[]>([]);
   const [cookingTime, setCookingTime] = useState<number>();
+  const [cookingTimeHelper, setCookingTimeHelper] = useState<string>("");
   const [preparationTime, setPreparationTime] = useState<number>();
+  const [preparationTimeHelper, setPreparationTimeHelper] =
+    useState<string>("");
   const [difficulty, setDifficulty] = useState<number>();
   const [ingredients, setIngredients] = useState<any>([
     { quantity: "", unit: "", name: "", id: randomID() },
   ]);
   const [picture, setPicture] = useState<string>("");
   const [pictureExist, setPictureExist] = useState<boolean>(false);
+  const [pictureHasChanged, setPictureHasChanged] = useState<boolean>(false);
   const [recipe, setRecipe] = useState<string[]>([]);
   const [introduction, setIntroduction] = useState("");
   const [alertText, setAlertText] = useState<string>("");
@@ -114,12 +118,16 @@ const AddRecipe = () => {
   };
 
   const makeAlert = (text: string, severity = "info") => {
-    setAlertText((prevText) => (prevText === "" ? text : prevText));
+    console.log("le texte de l'alerte est : " + text);
+    setAlertText((prevText) => {
+      console.log("Le texte precedant est : ", prevText);
+      return prevText === "" ? text : prevText;
+    });
     setAlertType(severity);
     setTimeout(() => {
       setAlertText("");
       setAlertType("info");
-    }, 3000);
+    }, 2000);
   };
 
   const addIngredient = () => {
@@ -153,7 +161,6 @@ const AddRecipe = () => {
   const saveInfos = async () => {
     try {
       let fieldsFilled = true;
-
       const newDate = new Date();
       const date = newDate.getTime();
       const dd = String(newDate.getDate()).padStart(2, "0");
@@ -169,11 +176,14 @@ const AddRecipe = () => {
       let image = "";
 
       if (picture !== "") {
-        image = await Fire.uploadFile(
-          "recipes/" + title.replace(/\s+/g, "-") + "_" + date + ".png",
-          picture
-        );
-        setPictureExist(true);
+        if (pictureHasChanged) {
+          image = await Fire.uploadFile(
+            "recipes/" + title.replace(/\s+/g, "-") + "_" + date + ".png",
+            picture
+          );
+          setPictureExist(true);
+          setPictureHasChanged(false);
+        }
       } else {
         makeAlert("Merci de rentrer une belle image !", "error");
         fieldsFilled = false;
@@ -199,6 +209,35 @@ const AddRecipe = () => {
         fieldsFilled = false;
       } else {
         setPortionsHelper("");
+      }
+
+      if (!preparationTime) {
+        makeAlert(
+          "Merci de renseigner le temps de préparation pour votre excellente recette !",
+          "error"
+        );
+        setPreparationTimeHelper("Veuillez entrer le temps de preparation");
+        fieldsFilled = false;
+      } else {
+        setPreparationTimeHelper("");
+      }
+
+      if (!cookingTime) {
+        makeAlert(
+          "Merci de renseigner le temps de cuisson pour votre excellente recette !",
+          "error"
+        );
+        setCookingTimeHelper(
+          "Veuillez entrer le temps de cuisson, s'il n'y a pas de temps de cuisson, rentrez 0"
+        );
+        fieldsFilled = false;
+      } else {
+        setCookingTimeHelper("");
+      }
+
+      if (ingredients.length < 2) {
+        makeAlert("Merci de renseigner au moins un ingrédient", "error");
+        fieldsFilled = false;
       }
 
       if (!fieldsFilled) {
@@ -369,7 +408,10 @@ const AddRecipe = () => {
                   <div>
                     <InputBase
                       type="file"
-                      onChange={(evt) => fileChanged(evt)}
+                      onChange={(evt) => {
+                        setPictureHasChanged(true);
+                        fileChanged(evt);
+                      }}
                       disabled={loading}
                       error={!pictureExist}
                     />
@@ -427,18 +469,6 @@ const AddRecipe = () => {
               <FormLabel component="legend" style={{ margin: "1rem 0 0" }}>
                 Type
               </FormLabel>
-              {/* <TextField
-              placeholder="ex : dessert"
-              fullWidth
-              margin="normal"
-              InputLabelProps={{
-                shrink: true,
-              }}
-              variant="outlined"
-              onChange={(e) => {
-                setType(e.target.value);
-              }}
-            /> */}
               <FiltersInput filters={filters} setFilters={setFilters} />
               <FormLabel component="legend" style={{ margin: "1rem 0 0" }}>
                 Ingrédients
@@ -474,6 +504,13 @@ const AddRecipe = () => {
                   shrink: true,
                 }}
                 variant="outlined"
+                helperText={preparationTimeHelper}
+                error={
+                  !(
+                    preparationTimeHelper === "" ||
+                    preparationTimeHelper === " "
+                  )
+                }
                 type="number"
                 onChange={(e) => {
                   e.target.value.length !== 0 &&
@@ -493,6 +530,8 @@ const AddRecipe = () => {
                   shrink: true,
                 }}
                 variant="outlined"
+                helperText={cookingTimeHelper}
+                error={!(cookingTimeHelper === "" || cookingTimeHelper === " ")}
                 type="number"
                 onChange={(e) => {
                   e.target.value.length !== 0 &&

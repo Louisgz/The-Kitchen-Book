@@ -52,6 +52,7 @@ const filtersNames = [
   "Sauces",
   "Vegan",
   "Veggie",
+  "Autre",
 ];
 
 const ITEM_HEIGHT = 48;

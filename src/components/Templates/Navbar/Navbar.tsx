@@ -232,6 +232,16 @@ const Navbar = (props: any) => {
                       input: classes.inputInput,
                     }}
                     inputProps={{ "aria-label": "search" }}
+                    onKeyPress={(e) => {
+                      if (e.charCode == 13) {
+                        history.push({
+                          pathname: "/recipes",
+                          search: `?q=${
+                            (e.target as HTMLTextAreaElement).value
+                          }`,
+                        });
+                      }
+                    }}
                   />
                 </div>
                 <Box display="flex" alignItems="center">
