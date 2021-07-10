@@ -34,7 +34,7 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 
 interface Props {
-  id: string;
+  objectID: string;
   cookingTime: number;
   image: string;
   date: number;
@@ -51,7 +51,7 @@ interface Props {
 
 export default function RecipePreview(props: Props) {
   const {
-    id,
+    objectID,
     cookingTime,
     image,
     date,
@@ -80,11 +80,10 @@ export default function RecipePreview(props: Props) {
       className={classes.item}
       height="100%"
       onClick={() => {
-        history.push(`/recipes/${id}/`);
+        history.push(`/recipes/${objectID}/`);
       }}
     >
       <Box width="100%">
-        {console.log(image)}
         <Box
           className={classes.imageContainer}
           style={{

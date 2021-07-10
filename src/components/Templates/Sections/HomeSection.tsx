@@ -49,7 +49,7 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 
 const HomeSection = (props: any) => {
-  const { image, imageAlt, descriptions, colors, path } = props;
+  const { image, imageAlt, descriptions, colors, path, id } = props;
   const classes = useStyles();
   const theme = useTheme();
   const history = useHistory();
@@ -78,11 +78,10 @@ const HomeSection = (props: any) => {
               display="flex"
               flexDirection="column"
               margin="2rem 0"
-              key={item.id}
+              key={`description-${id}-${index}`}
             >
               <Grid
                 container
-                xs={12}
                 key={index}
                 className={index % 2 !== 0 ? classes.reverse : ""}
               >

@@ -52,22 +52,9 @@ export default function RecipesPage() {
   const [recipes, setRecipes] = useState<any[]>([]);
   const query = getQueryParams("q");
 
-  const getRecipes = async () => {
-    try {
-      const recipesRef = Fire.store().collection("Recipes");
-      const recipes = await Fire.list(recipesRef);
-      setRecipes(recipes);
-    } catch (err) {
-      console.log(err);
-    }
-  };
-  useEffect(() => {
-    // console.log(recipes);
-  }, [recipes]);
-
-  useEffect(() => {
-    getRecipes();
-  }, []);
+  // useEffect(() => {
+  //   console.log(recipes);
+  // }, [recipes]);
 
   const searchClient = algoliasearch(
     "AZX5076CN4",
@@ -80,11 +67,6 @@ export default function RecipesPage() {
     const result = await index.search(query);
     setRecipes(result.hits);
   };
-  // search();
-
-  useEffect(() => {
-    search();
-  }, []);
   useEffect(() => {
     search();
   }, [query]);
@@ -142,16 +124,6 @@ export default function RecipesPage() {
             spacing={3}
             style={{ maxWidth: "1100px", margin: "3rem auto" }}
           >
-            {/* {recipes &&
-              recipes.map((recipe: any) => {
-                console.log(recipe);
-                return (
-                  <Grid item xs={12} sm={4} md={3} key={recipe.id}>
-                    <RecipePreview {...recipe} />
-                  </Grid>
-                );
-              })} */}
-
             {recipes?.map((recipe: any) => {
               return (
                 <Grid
