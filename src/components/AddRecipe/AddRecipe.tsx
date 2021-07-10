@@ -105,7 +105,7 @@ const AddRecipe = () => {
   const [introduction, setIntroduction] = useState("");
   const [alertText, setAlertText] = useState<string>("");
   const [alertType, setAlertType] = useState<any>("info");
-  const recipesCollection = Fire.store().collection("Recipes");
+  const recipesCollection = Fire.store().collection("recipes");
   const [loading, setLoading] = useState<boolean>(false);
 
   const fileChanged = async (evt: any) => {

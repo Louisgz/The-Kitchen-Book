@@ -11,6 +11,10 @@ import Fade from "@material-ui/core/Fade";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 import { Fire } from "../../services";
 
+//ALGOLIA
+import algoliasearch from "algoliasearch/lite";
+import { InstantSearch, SearchBox, Hits } from "react-instantsearch-dom";
+
 // IMPORT COMPONENTS
 import Navbar from "../Templates/Navbar/Navbar";
 import { Grid, Box, Typography } from "@material-ui/core";
@@ -45,7 +49,7 @@ export default function RecipesPage() {
   const theme = useTheme();
   const history = useHistory();
   const mobile = useMediaQuery(theme.breakpoints.down("xs"));
-  const [recipes, setRecipes] = useState<any>(null);
+  const [recipes, setRecipes] = useState<any[]>([]);
   const query = getQueryParams("q");
 
   const getRecipes = async () => {
@@ -58,11 +62,32 @@ export default function RecipesPage() {
     }
   };
   useEffect(() => {
-    console.log(recipes);
+    // console.log(recipes);
   }, [recipes]);
+
   useEffect(() => {
     getRecipes();
   }, []);
+
+  const searchClient = algoliasearch(
+    "AZX5076CN4",
+    "2bb1a6c5feac1bf7757e4837240c320e"
+  );
+
+  const index = searchClient.initIndex("recipes");
+
+  const search = async () => {
+    const result = await index.search(query);
+    setRecipes(result.hits);
+  };
+  // search();
+
+  useEffect(() => {
+    search();
+  }, []);
+  useEffect(() => {
+    search();
+  }, [query]);
 
   return (
     <Fade in timeout={500}>
@@ -117,7 +142,7 @@ export default function RecipesPage() {
             spacing={3}
             style={{ maxWidth: "1100px", margin: "3rem auto" }}
           >
-            {recipes &&
+            {/* {recipes &&
               recipes.map((recipe: any) => {
                 console.log(recipe);
                 return (
@@ -125,7 +150,21 @@ export default function RecipesPage() {
                     <RecipePreview {...recipe} />
                   </Grid>
                 );
-              })}
+              })} */}
+
+            {recipes?.map((recipe: any) => {
+              return (
+                <Grid
+                  item
+                  xs={12}
+                  sm={4}
+                  md={3}
+                  key={`container-${recipe.objectID}`}
+                >
+                  <RecipePreview {...recipe} key={`item-${recipe.objectID}`} />
+                </Grid>
+              );
+            })}
           </Grid>
         </Grid>
       </Box>

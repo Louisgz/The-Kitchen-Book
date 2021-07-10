@@ -21,6 +21,7 @@ const useStyles = makeStyles((theme: Theme) =>
       width: "100%",
       borderRadius: "10px",
     },
+    imageContainer: {},
     item: {
       cursor: "pointer",
       transition: "all .2s ease-in-out",
@@ -79,12 +80,22 @@ export default function RecipePreview(props: Props) {
       className={classes.item}
       height="100%"
       onClick={() => {
-        console.log("test");
         history.push(`/recipes/${id}/`);
       }}
     >
       <Box width="100%">
-        <img src={image} alt={title} className={classes.image} />
+        {console.log(image)}
+        <Box
+          className={classes.imageContainer}
+          style={{
+            backgroundImage: `url("${image}")`,
+            backgroundSize: "cover",
+            backgroundPosition: "center center",
+          }}
+          borderRadius="10px"
+          width="100%"
+          paddingTop="100%"
+        ></Box>
         <Typography variant="h6" component={"span"}>
           <Box color={theme.palette.text.primary} margin=".5rem 0">
             {title}
