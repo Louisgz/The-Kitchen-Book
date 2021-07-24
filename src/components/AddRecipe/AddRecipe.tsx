@@ -177,10 +177,10 @@ const AddRecipe = () => {
 
       if (picture !== "") {
         if (pictureHasChanged) {
-          image = await Fire.uploadFile(
-            "recipes/" + title.replace(/\s+/g, "-") + "_" + date + ".png",
-            picture
-          );
+          const link =
+            "recipes/" + title.replace(/\s+/g, "-") + "_" + date + ".png";
+          image = await Fire.uploadFile(link, picture);
+          setPicture(link);
           setPictureExist(true);
           setPictureHasChanged(false);
         }
@@ -235,7 +235,7 @@ const AddRecipe = () => {
         setCookingTimeHelper("");
       }
 
-      if (ingredients.length < 2) {
+      if (ingredients.length < 1) {
         makeAlert("Merci de renseigner au moins un ingrédient", "error");
         fieldsFilled = false;
       }
@@ -309,7 +309,7 @@ const AddRecipe = () => {
             onBlur={(e) => {
               setIngredients((prev: any[]) => {
                 const newIngredients = prev;
-                newIngredients[index].quantity = e.target.value;
+                newIngredients[index].quantity = parseInt(e.target.value);
                 return newIngredients;
               });
             }}
@@ -459,10 +459,10 @@ const AddRecipe = () => {
                 helperText={portionsHelper}
                 variant="outlined"
                 onChange={(e) => {
-                  setPortions([
-                    { quantity: e.target.value.split(" ", 2)[0] },
-                    { measure: e.target.value.split(" ", 2)[1] },
-                  ]);
+                  setPortions({
+                    quantity: parseInt(e.target.value.split(" ", 2)[0]),
+                    measure: e.target.value.split(" ", 2)[1],
+                  });
                 }}
                 error={!(portionsHelper === "" || portionsHelper === " ")}
               />
@@ -557,7 +557,10 @@ const AddRecipe = () => {
                 variant="outlined"
                 onChange={(e) => {
                   const recipesArray = e.target.value.split("\n");
-                  setRecipe(recipesArray);
+                  const filteredArray = recipesArray.filter(
+                    (el) => el != null && el != ""
+                  );
+                  setRecipe(filteredArray);
                 }}
               />
               <Button

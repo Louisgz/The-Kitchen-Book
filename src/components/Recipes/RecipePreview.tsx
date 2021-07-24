@@ -102,7 +102,7 @@ export default function RecipePreview(props: Props) {
         </Typography>
       </Box>
       <Box display="flex" justifyContent="space-between">
-        <RatingPreview difficulty={difficulty} />
+        <RatingPreview difficulty={difficulty} transparent />
       </Box>
     </Box>
   );

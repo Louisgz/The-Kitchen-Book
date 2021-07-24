@@ -56,64 +56,16 @@ const useStyles = makeStyles((theme: Theme) =>
         padding: "10px 5px",
       },
     },
-    navDisplayFlex: {
-      display: `flex`,
-      justifyContent: `space-between`,
-      gap: "1rem",
-
-      [theme.breakpoints.down("xs")]: {
-        display: "none",
-      },
-    },
-    linkText: {
-      textDecoration: `none`,
-      fontWeight: 700,
-      color: "#848ca5 !important",
-      fontSize: "1rem",
-      padding: `8px 18px`,
-      margin: "0 0px",
-      borderRadius: 20,
-
-      "&.Mui-selected": {
-        backgroundColor: "rgba(22, 35, 79, 0.9)",
-        color: "white !important",
-        border: "2px solid #848ca5",
-        boxSizing: "border-box !important",
-      },
-
-      "&:hover": {
-        transition: "color, .2s ease-in-out",
-        color: "white !important",
-        backgroundColor: "#0a1640 !important",
-      },
-    },
-    outBox: {
-      background:
-        "linear-gradient(98deg, #7489ff 2%, #86b4ff 35%, #7fc1ff 70%)",
-      borderRadius: 20,
-    },
-    activeMulticolor: {
-      "&.Mui-selected": {
-        position: "relative",
-        border: "2px solid transparent",
-        borderRadius: 20,
-        backgroundClip: "padding-box",
-      },
-    },
     appBar: {
       zIndex: 1,
     },
     transparent: {
       backgroundColor: "rgba(25,38,83,0.85)",
     },
-    title: {
-      fontWeight: 700,
-      fontSize: 21,
-    },
     search: {
       position: "relative",
       borderRadius: "2rem",
-      border: `2px solid rgba(44, 99, 11, 0.71)`,
+      border: `2px solid ${theme.palette.primary.main}`,
       flexGrow: 1,
       maxWidth: "500px",
       backgroundColor: fade(theme.palette.common.white, 0.15),
@@ -148,7 +100,7 @@ const useStyles = makeStyles((theme: Theme) =>
       },
     },
     inputRoot: {
-      color: "inherit",
+      color: "grey",
     },
     inputInput: {
       padding: theme.spacing(1, 1, 1, 0),
@@ -223,7 +175,7 @@ const Navbar = (props: any) => {
                 />
                 <div className={classes.search}>
                   <div className={classes.searchIcon}>
-                    <SearchIcon />
+                    <SearchIcon color={"primary"} />
                   </div>
                   <InputBase
                     placeholder="Je cherche..."
@@ -251,7 +203,7 @@ const Navbar = (props: any) => {
                       aria-controls="menu-appbar"
                       className={classes.iconButton}
                       onClick={() => history.push("/add-recipe")}
-                      color="inherit"
+                      color="primary"
                     >
                       <AddCircleOutlineIcon fontSize="large" />
                     </IconButton>
@@ -264,7 +216,7 @@ const Navbar = (props: any) => {
                       className={classes.iconButton}
                       onClick={handleMenu}
                       // onClick={() => history.push('/account')}
-                      color="inherit"
+                      color="primary"
                     >
                       <AccountCircle fontSize="large" />
                     </IconButton>

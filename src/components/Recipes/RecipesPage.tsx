@@ -9,7 +9,7 @@ import {
 import { useHistory } from "react-router-dom";
 import Fade from "@material-ui/core/Fade";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
-import { Fire } from "../../services";
+import { Fire } from "services";
 
 //ALGOLIA
 import algoliasearch from "algoliasearch/lite";
@@ -51,10 +51,6 @@ export default function RecipesPage() {
   const mobile = useMediaQuery(theme.breakpoints.down("xs"));
   const [recipes, setRecipes] = useState<any[]>([]);
   const query = getQueryParams("q");
-
-  // useEffect(() => {
-  //   console.log(recipes);
-  // }, [recipes]);
 
   const searchClient = algoliasearch(
     "AZX5076CN4",
