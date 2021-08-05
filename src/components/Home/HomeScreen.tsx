@@ -76,7 +76,7 @@ const HomeScreen = (): JSX.Element => {
                     fontWeight={600}
                     style={{ marginTop: "1rem", maxWidth: "600px" }}
                   >
-                    Votre site de recettes de cuisine favori !
+                    Votre test site de recettes de cuisine favori !
                   </Box>
                 </Typography>
                 <Typography variant="h5" component="span">
