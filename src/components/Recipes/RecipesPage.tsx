@@ -122,7 +122,11 @@ export default function RecipesPage(): JSX.Element {
                   md={3}
                   key={`container-${recipe.objectID}`}
                 >
-                  <RecipePreview {...recipe} key={`item-${recipe.objectID}`} />
+                  <RecipePreview
+                    {...recipe}
+                    key={`item-${recipe.objectID}`}
+                    transparentRating
+                  />
                 </Grid>
               );
             })}

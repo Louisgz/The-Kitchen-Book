@@ -2,6 +2,7 @@ import React from "react";
 import clsx from "clsx";
 import { Box, Typography } from "@material-ui/core";
 import { classes } from "istanbul-lib-coverage";
+import { useHistory } from "react-router-dom";
 import {
   makeStyles,
   Theme,
@@ -36,9 +37,13 @@ const useStyles = makeStyles((theme: Theme) =>
 export default function SmallCard(props: any) {
   const { Icon, title, path, classe } = props;
   const classes = useStyles();
+  const history = useHistory();
 
   return (
-    <Box className={clsx(classes.card, classe)}>
+    <Box
+      className={clsx(classes.card, classe)}
+      onClick={() => history.push(path)}
+    >
       {Icon}
       <Typography variant="h5" component="span">
         <Box marginLeft="2rem" fontWeight={500}>

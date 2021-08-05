@@ -76,7 +76,7 @@ const HomeScreen = (): JSX.Element => {
                     fontWeight={600}
                     style={{ marginTop: "1rem", maxWidth: "600px" }}
                   >
-                    Votre aa site de recettes de cuisine favori !
+                    Votre site de recettes de cuisine favori !
                   </Box>
                 </Typography>
                 <Typography variant="h5" component="span">
@@ -114,19 +114,19 @@ const HomeScreen = (): JSX.Element => {
               >
                 <SmallCard
                   title="Entrées"
-                  path=""
+                  path="/recipes?q=entree"
                   classe={classes.smallCard}
                   Icon={<SaladIcon className={classes.icon} />}
                 />
                 <SmallCard
                   title="Plats"
-                  path=""
+                  path="/recipes?q=plat"
                   classe={classes.smallCard}
                   Icon={<DishIcon className={classes.icon} />}
                 />
                 <SmallCard
                   title="Desserts"
-                  path=""
+                  path="/recipes?q=dessert"
                   classe={classes.smallCard}
                   Icon={<IceCream className={classes.icon} />}
                 />
@@ -218,6 +218,7 @@ const HomeScreen = (): JSX.Element => {
                       difficulty={4}
                       image="https://firebasestorage.googleapis.com/v0/b/the-kitchen-book-41408.appspot.com/o/recipes%2FInsta2_1626379555055.png?alt=media&token=4ace2d17-8ac8-46fb-b34f-9264de9ba4f3"
                       objectID="eef"
+                      orange
                     />
                   </Box>
                   <Box width="28%">
@@ -226,6 +227,7 @@ const HomeScreen = (): JSX.Element => {
                       difficulty={4}
                       image="https://firebasestorage.googleapis.com/v0/b/the-kitchen-book-41408.appspot.com/o/recipes%2FInsta2_1626379555055.png?alt=media&token=4ace2d17-8ac8-46fb-b34f-9264de9ba4f3"
                       objectID="eef"
+                      orange
                     />
                   </Box>
                   <Box width="28%">
@@ -234,6 +236,7 @@ const HomeScreen = (): JSX.Element => {
                       difficulty={4}
                       image="https://firebasestorage.googleapis.com/v0/b/the-kitchen-book-41408.appspot.com/o/recipes%2FInsta2_1626379555055.png?alt=media&token=4ace2d17-8ac8-46fb-b34f-9264de9ba4f3"
                       objectID="eef"
+                      orange
                     />
                   </Box>
                 </Box>

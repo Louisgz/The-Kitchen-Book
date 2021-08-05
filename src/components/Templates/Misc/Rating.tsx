@@ -8,15 +8,16 @@ interface Props {
   difficulty: number;
   transparent?: boolean;
   size?: "inherit" | "default" | "large" | "small" | undefined;
+  orange?: boolean;
 }
 
 export default function RatingPreview(props: Props) {
-  const { difficulty, transparent, size } = props;
+  const { difficulty, transparent, size, orange } = props;
   console.log(props);
 
   const StyledRating = withStyles({
     iconFilled: {
-      color: "#65BC30",
+      color: orange ? "#FF5C00" : "#65BC30",
     },
     iconEmpty: {
       color: transparent ? "transparent" : "#a1a1a1",

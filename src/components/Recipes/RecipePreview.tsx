@@ -54,10 +54,13 @@ interface Props {
   image: string;
   difficulty: number;
   title: string;
+  orange?: boolean;
+  transparentRating?: boolean;
 }
 
 export default function RecipePreview(props: Props) {
-  const { objectID, image, difficulty, title } = props;
+  const { objectID, image, difficulty, title, orange, transparentRating } =
+    props;
   const classes = useStyles();
   const theme = useTheme();
   const history = useHistory();
@@ -89,13 +92,23 @@ export default function RecipePreview(props: Props) {
           paddingTop="100%"
         ></Box>
         <Typography variant="h6" component={"span"}>
-          <Box color={theme.palette.text.primary} margin=".5rem 0">
+          <Box
+            color={theme.palette.text.primary}
+            margin=".5rem 0"
+            textAlign="center"
+            width="100%"
+            fontWeight={600}
+          >
             {title}
           </Box>
         </Typography>
       </Box>
-      <Box display="flex" justifyContent="space-between">
-        <RatingPreview difficulty={difficulty} transparent />
+      <Box display="flex" justifyContent="center" width="100%">
+        <RatingPreview
+          difficulty={difficulty}
+          transparent={transparentRating}
+          orange={orange}
+        />
       </Box>
     </Box>
   );

@@ -33,30 +33,6 @@ interface Props {
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
-    inputPortion: {
-      width: "24px !important",
-      color: `${theme.palette.primary.main} !important`,
-      "&::before": {
-        content: "'' !important",
-        border: "none !important",
-      },
-    },
-    ingredientQuantity: {
-      width: 30,
-      color: `${theme.palette.primary.main} !important`,
-      "&::before": {
-        content: "'' !important",
-        border: "none !important",
-      },
-    },
-    ingredientUnit: {
-      width: 40,
-      color: `${theme.palette.text.primary} !important`,
-      "&::before": {
-        content: "'' !important",
-        border: "none !important",
-      },
-    },
     ingredientName: {
       width: "100%",
       color: `${theme.palette.text.primary} !important`,
@@ -72,6 +48,7 @@ export default function RecipePage(props: Props) {
   const [recipe, setRecipe] = useState<any>(null);
   const [portions, setPortions] = useState<number>(recipe?.portions.quantity);
   const [portionCoef, setPortionCoef] = useState<number>(1);
+  const [totalTime, setTotalTime] = useState<string>("");
 
   const id = props.match.params.id || null;
   const classes = useStyles();
@@ -91,6 +68,19 @@ export default function RecipePage(props: Props) {
     console.log(id);
     getRecipeInfos(id);
   }, []);
+
+  const getAddTime = (time1: number, time2: number) => {
+    const time = time1 + time2;
+    const hours = Math.floor(time / 60);
+    const minutes = time % 60;
+    return `${hours && hours + "h"} ${minutes && minutes + "min"}`;
+  };
+
+  useEffect(() => {
+    if (recipe) {
+      setTotalTime(getAddTime(recipe.preparationTime, recipe.cookingTime));
+    }
+  }, [recipe]);
 
   useEffect(() => {
     if (recipe) setPortions(recipe.portions.quantity);
@@ -120,7 +110,7 @@ export default function RecipePage(props: Props) {
               Retour
             </Button>
           </Grid>
-          <Grid item sm={12} md={5}>
+          <Grid item sm={12} md={5} style={{ height: "fit-content  " }}>
             <Box
               width="100%"
               height="100%"
@@ -142,7 +132,7 @@ export default function RecipePage(props: Props) {
                   color="primary"
                   style={{ marginLeft: "1rem" }}
                 >
-                  {recipe?.preparationTime + recipe?.cookingTime} min
+                  {totalTime}
                 </Typography>
               </Box>
             </Box>
@@ -254,18 +244,13 @@ export default function RecipePage(props: Props) {
                     }}
                   />
                   <Box display="flex" alignItems="center">
-                    <TextField
-                      value={portions}
-                      style={{ color: theme.palette.primary.main }}
-                      disabled
-                      InputProps={{
-                        classes: {
-                          root: classes.inputPortion,
-                        },
-                      }}
-                    />
-                    <Typography variant="h6" color="primary">
-                      {recipe?.portions.measure}
+                    <Typography variant="h6" color="primary" component={"span"}>
+                      <Box marginLeft=".25rem" marginRight=".25rem">
+                        {portions}
+                      </Box>
+                    </Typography>
+                    <Typography variant="h6" color="primary" component="span">
+                      <Box marginRight=".25rem">{recipe?.portions.measure}</Box>
                     </Typography>
                   </Box>
                   <AddIcon
@@ -273,12 +258,12 @@ export default function RecipePage(props: Props) {
                     style={{ cursor: "pointer" }}
                     fontSize="small"
                     onClick={() => {
-                      setPortions((prev) => {
-                        return prev + 1;
-                      });
                       setPortionCoef(
                         (portions + 1) / recipe?.portions.quantity
                       );
+                      setPortions((prev) => {
+                        return prev + 1;
+                      });
                     }}
                   />
                 </Box>
@@ -288,8 +273,9 @@ export default function RecipePage(props: Props) {
                   <Box
                     width="100%"
                     display="flex"
-                    alignItems="center"
+                    alignItems="flex-start"
                     key={ingredient.id}
+                    marginTop="1rem"
                   >
                     <Typography variant="h6">-</Typography>
                     <Typography
@@ -299,7 +285,7 @@ export default function RecipePage(props: Props) {
                         color: theme.palette.primary.main,
                       }}
                     >
-                      {Math.floor(ingredient.quantity * portionCoef)}
+                      {Math.floor(ingredient.quantity * portionCoef) || 1}
                     </Typography>
                     <Typography variant="h6" style={{ marginLeft: ".25rem" }}>
                       {ingredient.unit}

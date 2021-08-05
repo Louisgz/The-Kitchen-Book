@@ -211,7 +211,7 @@ const AddRecipe = () => {
         setPortionsHelper("");
       }
 
-      if (!preparationTime) {
+      if (!preparationTime && preparationTime !== 0) {
         makeAlert(
           "Merci de renseigner le temps de préparation pour votre excellente recette !",
           "error"
@@ -222,7 +222,7 @@ const AddRecipe = () => {
         setPreparationTimeHelper("");
       }
 
-      if (!cookingTime) {
+      if (!cookingTime && cookingTime !== 0) {
         makeAlert(
           "Merci de renseigner le temps de cuisson pour votre excellente recette !",
           "error"
@@ -393,7 +393,7 @@ const AddRecipe = () => {
                   component="legend"
                   style={{ margin: "1rem 0 .5rem" }}
                 >
-                  Image de la recette :
+                  Image de la recette* :
                 </FormLabel>
                 <div className="flex-row">
                   <div className="input-preview">
@@ -419,7 +419,7 @@ const AddRecipe = () => {
                 </div>
               </div>
               <FormLabel component="legend" style={{ margin: "1rem 0 0" }}>
-                Titre
+                Titre*
               </FormLabel>
               <TextField
                 placeholder="ex : Tarte aux fraises"
@@ -447,7 +447,7 @@ const AddRecipe = () => {
                 onChange={(e) => setIntroduction(e.target.value)}
               />
               <FormLabel component="legend" style={{ margin: "1rem 0 0" }}>
-                Portions
+                Portions*
               </FormLabel>
               <TextField
                 placeholder="ex : 6 verrines / 2 personnes"
@@ -467,11 +467,11 @@ const AddRecipe = () => {
                 error={!(portionsHelper === "" || portionsHelper === " ")}
               />
               <FormLabel component="legend" style={{ margin: "1rem 0 0" }}>
-                Type
+                Type*
               </FormLabel>
               <FiltersInput filters={filters} setFilters={setFilters} />
               <FormLabel component="legend" style={{ margin: "1rem 0 0" }}>
-                Ingrédients
+                Ingrédients*
               </FormLabel>
               {ingredients.map((ingredient: any, index: number) => {
                 return (
@@ -494,7 +494,7 @@ const AddRecipe = () => {
                 <AddIcon fontSize="inherit" onClick={addIngredient} />
               </IconButton>
               <FormLabel component="legend" style={{ margin: "1rem 0 0" }}>
-                Temps de préparation (minutes)
+                Temps de préparation* (minutes)
               </FormLabel>
               <TextField
                 placeholder="ex : 35"
@@ -520,7 +520,7 @@ const AddRecipe = () => {
                 }}
               />
               <FormLabel component="legend" style={{ margin: "1rem 0 0" }}>
-                Temps de cuisson (minutes)
+                Temps de cuisson* (minutes)
               </FormLabel>
               <TextField
                 placeholder="ex : 10"
@@ -543,7 +543,7 @@ const AddRecipe = () => {
               </FormLabel>
               <CustomizedRatings setDifficulty={setDifficulty} />
               <FormLabel component="legend" style={{ margin: "1rem 0 0" }}>
-                Recette (sautez une ligne entre chaque étape)
+                Recette* (sautez une ligne entre chaque étape)
               </FormLabel>
               <TextField
                 placeholder="Mélanger la farine et les oeufs pour former une pâte homogène. &#13;&#10;Faire cuire pendant 5 minutes.&#13;&#10;Régalez-vous !"
@@ -555,7 +555,7 @@ const AddRecipe = () => {
                   shrink: true,
                 }}
                 variant="outlined"
-                onChange={(e) => {
+                onBlur={(e) => {
                   const recipesArray = e.target.value.split("\n");
                   const filteredArray = recipesArray.filter(
                     (el) => el != null && el != ""
