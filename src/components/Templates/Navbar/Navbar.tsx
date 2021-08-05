@@ -1,15 +1,5 @@
 import React from "react";
-import {
-  AppBar,
-  Toolbar,
-  List,
-  ListItem,
-  ListItemText,
-  Container,
-  MenuItem,
-  Menu,
-  CssBaseline,
-} from "@material-ui/core";
+import { AppBar, Toolbar, Container, MenuItem, Menu } from "@material-ui/core";
 import {
   fade,
   makeStyles,
@@ -17,7 +7,6 @@ import {
   useTheme,
   createStyles,
 } from "@material-ui/core/styles";
-import { Link } from "react-router-dom";
 import { useHistory } from "react-router-dom";
 import Fade from "@material-ui/core/Fade";
 import IconButton from "@material-ui/core/IconButton";
@@ -147,13 +136,16 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 );
 
-const Navbar = (props: any) => {
+interface Props {
+  transparent?: boolean;
+}
+
+const Navbar = (props: Props): JSX.Element => {
   const classes = useStyles();
   const theme = useTheme();
   const history = useHistory();
-  const pathname = document.location.pathname;
   const mobile = useMediaQuery(theme.breakpoints.down("xs"));
-  const { transparent, activeMulticolor } = props;
+  const { transparent } = props;
 
   //Drawer Account
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);

@@ -1,19 +1,10 @@
 // IMPORT GENERAL
 import React, { useState, useEffect } from "react";
-import {
-  makeStyles,
-  Theme,
-  useTheme,
-  createStyles,
-} from "@material-ui/core/styles";
-import { useHistory } from "react-router-dom";
+import { makeStyles, useTheme, createStyles } from "@material-ui/core/styles";
 import Fade from "@material-ui/core/Fade";
-import useMediaQuery from "@material-ui/core/useMediaQuery";
-import { Fire } from "services";
 
 //ALGOLIA
 import algoliasearch from "algoliasearch/lite";
-import { InstantSearch, SearchBox, Hits } from "react-instantsearch-dom";
 
 // IMPORT COMPONENTS
 import Navbar from "../Templates/Navbar/Navbar";
@@ -21,7 +12,10 @@ import { Grid, Box, Typography } from "@material-ui/core";
 import RecipePreview from "./RecipePreview";
 import FilterListIcon from "@material-ui/icons/FilterList";
 
-const useStyles = makeStyles((theme: Theme) =>
+//Import Types
+import { RecipeProps } from "../../Types/RecipeProps";
+
+const useStyles = makeStyles(() =>
   createStyles({
     homeScreen: {
       maxWidth: 1300,
@@ -44,12 +38,10 @@ const getQueryParams = (param: string) => {
   );
 };
 
-export default function RecipesPage() {
+export default function RecipesPage(): JSX.Element {
   const classes = useStyles();
   const theme = useTheme();
-  const history = useHistory();
-  const mobile = useMediaQuery(theme.breakpoints.down("xs"));
-  const [recipes, setRecipes] = useState<any[]>([]);
+  const [recipes, setRecipes] = useState<RecipeProps[]>([]);
   const query = getQueryParams("q");
 
   const searchClient = algoliasearch(
@@ -60,7 +52,8 @@ export default function RecipesPage() {
   const index = searchClient.initIndex("recipes");
 
   const search = async () => {
-    const result = await index.search(query);
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const result: any = await index.search(query);
     setRecipes(result.hits);
   };
   useEffect(() => {
@@ -120,7 +113,7 @@ export default function RecipesPage() {
             spacing={3}
             style={{ maxWidth: "1100px", margin: "3rem auto" }}
           >
-            {recipes?.map((recipe: any) => {
+            {recipes?.map((recipe: RecipeProps) => {
               return (
                 <Grid
                   item

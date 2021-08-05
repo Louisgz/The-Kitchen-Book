@@ -1,18 +1,16 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import Navbar from "../Templates/Navbar/Navbar";
 import {
   makeStyles,
-  Theme,
-  useTheme,
+  // useTheme,
   createStyles,
+  // Theme
 } from "@material-ui/core/styles";
-import { useHistory } from "react-router-dom";
+// import { useHistory } from "react-router-dom";
 import Fade from "@material-ui/core/Fade";
-import useMediaQuery from "@material-ui/core/useMediaQuery";
+// import useMediaQuery from "@material-ui/core/useMediaQuery";
 import { Grid, Box, Typography } from "@material-ui/core";
-import sections from "./HomeSectionsData";
-import HomeSection from "../Templates/Sections/HomeSection";
-import { Fire } from "../../services";
+// import { Fire } from "../../services";
 import ButtonFilled from "../Templates/Buttons/ButtonFilled";
 import Particles from "../Templates/Particles/Particles";
 import SmallCard from "../Templates/Cards/SmallCard";
@@ -26,7 +24,8 @@ import { ReactComponent as IceCream } from "images/Accueil/Icecream.svg";
 import { ReactComponent as SaladIcon } from "images/Accueil/salad_icon.svg";
 import { ReactComponent as DishIcon } from "images/Accueil/dish_icon.svg";
 
-const useStyles = makeStyles((theme: Theme) =>
+const useStyles = makeStyles(() =>
+  // theme: Theme
   createStyles({
     homeScreen: {
       maxWidth: 1300,
@@ -49,11 +48,11 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 );
 
-const HomeScreen = () => {
+const HomeScreen = (): JSX.Element => {
   const classes = useStyles();
-  const theme = useTheme();
-  const history = useHistory();
-  const mobile = useMediaQuery(theme.breakpoints.down("xs"));
+  // const theme = useTheme();
+  // const history = useHistory();
+  // const mobile = useMediaQuery(theme.breakpoints.down("xs"));
 
   return (
     <Fade in timeout={500}>

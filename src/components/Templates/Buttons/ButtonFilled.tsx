@@ -1,14 +1,9 @@
 import React from "react";
 import { Button, Typography } from "@material-ui/core";
-import {
-  makeStyles,
-  Theme,
-  useTheme,
-  createStyles,
-} from "@material-ui/core/styles";
+import { makeStyles, createStyles } from "@material-ui/core/styles";
 import { useHistory } from "react-router-dom";
 
-const useStyles = makeStyles((theme: Theme) =>
+const useStyles = makeStyles(() =>
   createStyles({
     button: {
       color: "white",
@@ -26,10 +21,15 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 );
 
-export default function ButtonFilled(props: any) {
-  const { path, title, shadow } = props;
+interface Props {
+  path: string;
+  title: string;
+  shadow?: boolean;
+}
+
+export default function ButtonFilled(props: Props): JSX.Element {
+  const { path, title } = props;
   const classes = useStyles();
-  const theme = useTheme();
   const history = useHistory();
 
   return (
