@@ -33,38 +33,31 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 );
 
+// interface Props {
+//   objectID: string;
+//   cookingTime: number;
+//   image: string;
+//   date: number;
+//   dateString?: string;
+//   difficulty: number;
+//   filters: string[];
+//   ingredients: [];
+//   introduction: string;
+//   portions: [];
+//   preparationTime: number;
+//   recipe: string[];
+//   title: string;
+// }
+
 interface Props {
   objectID: string;
-  cookingTime: number;
   image: string;
-  date: number;
-  dateString?: string;
   difficulty: number;
-  filters: string[];
-  ingredients: [];
-  introduction: string;
-  portions: [];
-  preparationTime: number;
-  recipe: string[];
   title: string;
 }
 
 export default function RecipePreview(props: Props) {
-  const {
-    objectID,
-    cookingTime,
-    image,
-    date,
-    dateString,
-    difficulty,
-    filters,
-    ingredients,
-    introduction,
-    portions,
-    preparationTime,
-    recipe,
-    title,
-  } = props;
+  const { objectID, image, difficulty, title } = props;
   const classes = useStyles();
   const theme = useTheme();
   const history = useHistory();

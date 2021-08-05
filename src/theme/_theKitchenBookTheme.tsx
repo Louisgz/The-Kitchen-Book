@@ -15,7 +15,7 @@ declare module "@material-ui/core/styles/createBreakpoints" {
 
 export const theme = createMuiTheme({
   typography: {
-    fontFamily: '"Poppins"',
+    fontFamily: '"Montserrat"',
     fontSize: 14,
     fontWeightLight: 300,
     fontWeightRegular: 400,
@@ -53,7 +53,7 @@ export const theme = createMuiTheme({
   overrides: {
     MuiTypography: {
       h1: {
-        fontSize: `5rem`, //40px
+        fontSize: `2.5rem`, //40px
         fontWeight: "inherit",
         lineHeight: "inherit",
       },

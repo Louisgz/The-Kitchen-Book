@@ -48,7 +48,7 @@ const useStyles = makeStyles((theme: Theme) =>
       display: `flex`,
       justifyContent: `space-between`,
       alignItems: `center`,
-      padding: `1.5rem`,
+      padding: `1rem`,
       [theme.breakpoints.down("md")]: {
         padding: "15px 25px",
       },
@@ -58,6 +58,12 @@ const useStyles = makeStyles((theme: Theme) =>
     },
     appBar: {
       zIndex: 1,
+      boxShadow: "-1px 1px 15px rgba(0, 0, 0, 0.1)",
+      "&>div": {
+        maxWidth: "1350px",
+        margin: "auto",
+        width: "100%",
+      },
     },
     transparent: {
       backgroundColor: "rgba(25,38,83,0.85)",
@@ -65,7 +71,8 @@ const useStyles = makeStyles((theme: Theme) =>
     search: {
       position: "relative",
       borderRadius: "2rem",
-      border: `2px solid ${theme.palette.primary.main}`,
+      // border: `2px solid ${theme.palette.primary.main}`,
+      boxShadow: "2px 4px 27px 1px rgba(17, 17, 17, 0.12)",
       flexGrow: 1,
       maxWidth: "500px",
       backgroundColor: fade(theme.palette.common.white, 0.15),
@@ -88,6 +95,10 @@ const useStyles = makeStyles((theme: Theme) =>
       display: "flex",
       alignItems: "center",
       justifyContent: "center",
+      "&>svg": {
+        fontSize: "1.75rem !important",
+        fill: "rgba(17, 17, 17, 0.5)",
+      },
     },
     iconButton: {
       fontSize: 40,
@@ -103,11 +114,17 @@ const useStyles = makeStyles((theme: Theme) =>
       color: "grey",
     },
     inputInput: {
-      padding: theme.spacing(1, 1, 1, 0),
+      // padding: theme.spacing(1, 1, 1, 0),
       // vertical padding + font size from searchIcon
-      paddingLeft: `calc(1em + ${theme.spacing(4)}px)`,
+      padding: "1rem",
+      paddingLeft: `calc(1.25em + ${theme.spacing(4)}px)`,
       transition: theme.transitions.create("width"),
       width: "100%",
+      color: "rgba(17, 17, 17, .9) !important",
+      fontWeight: 300,
+      "&::placeholder": {
+        color: "rgba(17, 17, 17, .75) !important",
+      },
       [theme.breakpoints.up("md")]: {
         width: "20ch",
       },
@@ -175,7 +192,7 @@ const Navbar = (props: any) => {
                 />
                 <div className={classes.search}>
                   <div className={classes.searchIcon}>
-                    <SearchIcon color={"primary"} />
+                    <SearchIcon />
                   </div>
                   <InputBase
                     placeholder="Je cherche..."
