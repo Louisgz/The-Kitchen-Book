@@ -26,6 +26,8 @@ import RatingPreview from "../Templates/Misc/Rating";
 import WatchLaterIcon from "@material-ui/icons/WatchLater";
 import LocalDiningIcon from "@material-ui/icons/LocalDining";
 import ArrowBackIcon from "@material-ui/icons/ArrowBack";
+import cookingTimeIcon from "images/Misc/cookingTimeIcon.svg";
+import preparationTimeIcon from "images/Misc/preparationTimeIcon.svg";
 
 interface Props {
   match: any;
@@ -96,7 +98,7 @@ export default function RecipePage(props: Props) {
           item
           container
           xs={12}
-          style={{ padding: "2rem 4rem", maxWidth: 1100, margin: "auto" }}
+          style={{ padding: "2rem 4rem", maxWidth: 1700, margin: "auto" }}
           spacing={mobile ? 3 : 6}
         >
           <Grid item xs={12} container justify="flex-start">
@@ -110,17 +112,116 @@ export default function RecipePage(props: Props) {
               Retour
             </Button>
           </Grid>
-          <Grid item sm={12} md={5} style={{ height: "fit-content  " }}>
-            <Box
-              width="100%"
-              height="100%"
-              paddingTop="100%"
-              borderRadius="10px"
-              style={{
-                background: `center / cover no-repeat url(${recipe?.image})`,
-                paddingTop: "100%",
-              }}
-            ></Box>
+          <Grid container item sm={12} md={5} spacing={mobile ? 3 : 6}>
+            <Grid item xs={12}>
+              <Box
+                width="100%"
+                height="100%"
+                paddingTop="100%"
+                borderRadius="10px"
+                style={{
+                  background: `center / cover no-repeat url(${recipe?.image})`,
+                  paddingTop: "100%",
+                }}
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <CardGeneral>
+                <Box width="100%" display="flex" justifyContent="space-between">
+                  <Box display="flex" width="50%" alignItems="center">
+                    <ShoppingCartIcon
+                      color="primary"
+                      style={{ marginRight: ".7rem" }}
+                      fontSize="default"
+                    />
+                    <Typography variant="h6">Ingrédients :</Typography>
+                  </Box>
+                  <Box
+                    display="flex"
+                    width="45%"
+                    justifyContent="space-between"
+                    alignItems="center"
+                  >
+                    <RemoveIcon
+                      color="primary"
+                      style={{ cursor: portions >= 1 ? "pointer" : "default" }}
+                      fontSize="small"
+                      onClick={() => {
+                        setPortionCoef((prev) =>
+                          portions > 1
+                            ? (portions - 1) / recipe?.portions.quantity
+                            : portions / recipe?.portions.quantity
+                        );
+                        setPortions((prev) => (prev > 1 ? prev - 1 : prev));
+                      }}
+                    />
+                    <Box display="flex" alignItems="center">
+                      <Typography
+                        variant="h6"
+                        color="primary"
+                        component={"span"}
+                      >
+                        <Box marginLeft=".25rem" marginRight=".25rem">
+                          {portions}
+                        </Box>
+                      </Typography>
+                      <Typography variant="h6" color="primary" component="span">
+                        <Box marginRight=".25rem">
+                          {recipe?.portions.measure}
+                        </Box>
+                      </Typography>
+                    </Box>
+                    <AddIcon
+                      color="primary"
+                      style={{ cursor: "pointer" }}
+                      fontSize="small"
+                      onClick={() => {
+                        setPortionCoef(
+                          (portions + 1) / recipe?.portions.quantity
+                        );
+                        setPortions((prev) => {
+                          return prev + 1;
+                        });
+                      }}
+                    />
+                  </Box>
+                </Box>
+                <Box width="100%" marginTop="1rem" padding="0 .25rem">
+                  {recipe?.ingredients.map((ingredient: any) => (
+                    <Box
+                      width="100%"
+                      display="flex"
+                      alignItems="flex-start"
+                      key={ingredient.id}
+                      marginTop="1rem"
+                    >
+                      <Typography variant="body1">-</Typography>
+                      <Typography
+                        variant="body1"
+                        style={{
+                          marginLeft: ".75rem",
+                          color: theme.palette.primary.main,
+                        }}
+                      >
+                        {Math.floor(ingredient.quantity * portionCoef) || 1}
+                      </Typography>
+                      <Typography
+                        variant="body1"
+                        style={{ marginLeft: ".25rem" }}
+                      >
+                        {ingredient.unit}
+                      </Typography>
+                      <Typography
+                        variant="body1"
+                        style={{ marginLeft: ".5rem" }}
+                      >
+                        {ingredient.name}
+                      </Typography>
+                    </Box>
+                  ))}
+                </Box>
+              </CardGeneral>
+            </Grid>
           </Grid>
           <Grid item sm={12} md={7}>
             <Box width="100%" display="flex" justifyContent="space-between">
@@ -128,7 +229,7 @@ export default function RecipePage(props: Props) {
               <Box display="flex" alignItems="center">
                 <WatchLaterIcon color="primary" />
                 <Typography
-                  variant="h5"
+                  variant="h6"
                   color="primary"
                   style={{ marginLeft: "1rem" }}
                 >
@@ -156,9 +257,9 @@ export default function RecipePage(props: Props) {
                     <LocalDiningIcon
                       color="primary"
                       style={{ marginRight: ".7rem" }}
-                      fontSize="default"
+                      fontSize="large"
                     />
-                    <Typography variant="h5">Préparation :</Typography>
+                    <Typography variant="h6">Préparation :</Typography>
                   </Box>
                   <Box
                     display="flex"
@@ -166,23 +267,34 @@ export default function RecipePage(props: Props) {
                     flexDirection="column"
                     alignItems="flex-end"
                   >
-                    <Box display="flex" width="50%" alignItems="center">
-                      <LocalDiningIcon
-                        color="primary"
-                        style={{ marginRight: ".7rem" }}
-                        fontSize="default"
+                    <Box
+                      display="flex"
+                      width="50%"
+                      alignItems="center"
+                      justifyContent="flex-end"
+                    >
+                      <img
+                        src={preparationTimeIcon}
+                        alt=""
+                        style={{ width: "1.75rem", marginRight: ".7rem" }}
                       />
-                      <Typography variant="h6" color="primary">
+                      <Typography variant="body1" color="primary">
                         {recipe?.preparationTime} min
                       </Typography>
                     </Box>
-                    <Box display="flex" width="50%" alignItems="center">
-                      <LocalDiningIcon
-                        color="primary"
-                        style={{ marginRight: ".7rem" }}
-                        fontSize="default"
+                    <Box
+                      display="flex"
+                      width="50%"
+                      alignItems="center"
+                      justifyContent="flex-end"
+                      marginTop=".5rem"
+                    >
+                      <img
+                        src={cookingTimeIcon}
+                        alt=""
+                        style={{ width: "1.75rem", marginRight: ".7rem" }}
                       />
-                      <Typography variant="h6" color="primary">
+                      <Typography variant="body1" color="primary">
                         {recipe?.cookingTime} min
                       </Typography>{" "}
                     </Box>
@@ -197,106 +309,25 @@ export default function RecipePage(props: Props) {
                       key={"step_recipe_" + index}
                       marginTop="1rem"
                     >
-                      <Typography variant="h6">-</Typography>
+                      {isNaN(parseInt(step.charAt(0))) ? (
+                        <Typography variant="body2">-</Typography>
+                      ) : (
+                        <strong>{step}</strong>
+                      )}
                       <Typography
-                        variant="h6"
+                        variant="body2"
                         style={{
                           marginLeft: ".75rem",
                           color: theme.palette.text.primary,
                         }}
                       >
-                        {step}
+                        {isNaN(parseInt(step.charAt(0))) && step}
                       </Typography>
                     </Box>
                   ))}
                 </Box>
               </CardGeneral>
             </Box>
-          </Grid>
-          <Grid item sm={12} md={5}>
-            <CardGeneral>
-              <Box width="100%" display="flex" justifyContent="space-between">
-                <Box display="flex" width="50%" alignItems="center">
-                  <ShoppingCartIcon
-                    color="primary"
-                    style={{ marginRight: ".7rem" }}
-                    fontSize="default"
-                  />
-                  <Typography variant="h5">Ingrédients :</Typography>
-                </Box>
-                <Box
-                  display="flex"
-                  width="45%"
-                  justifyContent="space-between"
-                  alignItems="center"
-                >
-                  <RemoveIcon
-                    color="primary"
-                    style={{ cursor: portions >= 1 ? "pointer" : "default" }}
-                    fontSize="small"
-                    onClick={() => {
-                      setPortionCoef((prev) =>
-                        portions > 1
-                          ? (portions - 1) / recipe?.portions.quantity
-                          : portions / recipe?.portions.quantity
-                      );
-                      setPortions((prev) => (prev > 1 ? prev - 1 : prev));
-                    }}
-                  />
-                  <Box display="flex" alignItems="center">
-                    <Typography variant="h6" color="primary" component={"span"}>
-                      <Box marginLeft=".25rem" marginRight=".25rem">
-                        {portions}
-                      </Box>
-                    </Typography>
-                    <Typography variant="h6" color="primary" component="span">
-                      <Box marginRight=".25rem">{recipe?.portions.measure}</Box>
-                    </Typography>
-                  </Box>
-                  <AddIcon
-                    color="primary"
-                    style={{ cursor: "pointer" }}
-                    fontSize="small"
-                    onClick={() => {
-                      setPortionCoef(
-                        (portions + 1) / recipe?.portions.quantity
-                      );
-                      setPortions((prev) => {
-                        return prev + 1;
-                      });
-                    }}
-                  />
-                </Box>
-              </Box>
-              <Box width="100%" marginTop="1rem" padding="0 .25rem">
-                {recipe?.ingredients.map((ingredient: any) => (
-                  <Box
-                    width="100%"
-                    display="flex"
-                    alignItems="flex-start"
-                    key={ingredient.id}
-                    marginTop="1rem"
-                  >
-                    <Typography variant="h6">-</Typography>
-                    <Typography
-                      variant="h6"
-                      style={{
-                        marginLeft: ".75rem",
-                        color: theme.palette.primary.main,
-                      }}
-                    >
-                      {Math.floor(ingredient.quantity * portionCoef) || 1}
-                    </Typography>
-                    <Typography variant="h6" style={{ marginLeft: ".25rem" }}>
-                      {ingredient.unit}
-                    </Typography>
-                    <Typography variant="h6" style={{ marginLeft: ".5rem" }}>
-                      {ingredient.name}
-                    </Typography>
-                  </Box>
-                ))}
-              </Box>
-            </CardGeneral>
           </Grid>
         </Grid>
       </Box>

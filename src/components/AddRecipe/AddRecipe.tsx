@@ -546,7 +546,7 @@ const AddRecipe = () => {
                 Recette* (sautez une ligne entre chaque étape)
               </FormLabel>
               <TextField
-                placeholder="Mélanger la farine et les oeufs pour former une pâte homogène. &#13;&#10;Faire cuire pendant 5 minutes.&#13;&#10;Régalez-vous !"
+                placeholder="1 - La pâte &#13;&#10;Mélanger la farine et les oeufs pour former une pâte homogène. &#13;&#10;2 - La cuisson &#13;&#10;Faire cuire pendant 5 minutes.&#13;&#10;3 - Dernière étape &#13;&#10;Régalez-vous !"
                 multiline
                 fullWidth
                 rows={8}
