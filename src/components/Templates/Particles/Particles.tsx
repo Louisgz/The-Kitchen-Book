@@ -1,8 +1,9 @@
 import React from "react";
 import TsParticles from "react-tsparticles";
-import { createStyles, makeStyles } from "@material-ui/core";
+import { createStyles, makeStyles, useTheme } from "@material-ui/core";
 import ParticleGreen from "images/Geometric/ParticleGreen.svg";
 import ParticleOrange from "images/Geometric/ParticleOrange.svg";
+import useMediaQuery from "@material-ui/core/useMediaQuery";
 
 const useStyles = makeStyles(() =>
   createStyles({
@@ -18,6 +19,9 @@ const useStyles = makeStyles(() =>
 
 const Particles: React.FC = () => {
   const classes = useStyles();
+  const theme = useTheme();
+  const mobile = useMediaQuery(theme.breakpoints.down("xs"));
+
   return (
     <React.Fragment>
       <TsParticles
@@ -29,7 +33,7 @@ const Particles: React.FC = () => {
             detectsOn: "parent",
             events: {
               onClick: {
-                enable: true,
+                enable: !mobile,
                 mode: "repulse",
               },
               onHover: {
@@ -43,7 +47,7 @@ const Particles: React.FC = () => {
                 distance: 400,
                 duration: 2,
                 opacity: 0.8,
-                size: 15,
+                size: mobile ? 10 : 15,
               },
               push: {
                 quantity: 4,
@@ -77,7 +81,7 @@ const Particles: React.FC = () => {
                 enable: true,
                 value_area: 800,
               },
-              value: 15,
+              value: mobile ? 8 : 15,
             },
             opacity: {
               value: 1,
