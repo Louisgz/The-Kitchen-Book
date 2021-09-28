@@ -9,6 +9,7 @@ import {
   useTheme,
   createStyles,
 } from "@material-ui/core/styles";
+import useMediaQuery from "@material-ui/core/useMediaQuery";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -25,6 +26,10 @@ const useStyles = makeStyles((theme: Theme) =>
       cursor: "pointer",
       maxHeight: "65px",
 
+      [theme.breakpoints.down("xs")]: {
+        // padding: ".75rem 1.5rem .75rem 1rem",
+      },
+
       "&:hover": {
         boxShadow: "10px 10px 26px rgba(101, 188, 48, 0.6)",
         backgroundColor: "#65BC30",
@@ -38,6 +43,8 @@ export default function SmallCard(props: any) {
   const { Icon, title, path, classe } = props;
   const classes = useStyles();
   const history = useHistory();
+  const theme = useTheme();
+  const mobile = useMediaQuery(theme.breakpoints.down("xs"));
 
   return (
     <Box
@@ -45,7 +52,7 @@ export default function SmallCard(props: any) {
       onClick={() => history.push(path)}
     >
       {Icon}
-      <Typography variant="h5" component="span">
+      <Typography variant={"h5"} component="span">
         <Box marginLeft="2rem" fontWeight={500}>
           {title}
         </Box>

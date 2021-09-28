@@ -1,7 +1,8 @@
 import React from "react";
 import { Button, Typography } from "@material-ui/core";
-import { makeStyles, createStyles } from "@material-ui/core/styles";
+import { makeStyles, createStyles, useTheme } from "@material-ui/core/styles";
 import { useHistory } from "react-router-dom";
+import useMediaQuery from "@material-ui/core/useMediaQuery";
 
 const useStyles = makeStyles(() =>
   createStyles({
@@ -31,6 +32,8 @@ export default function ButtonFilled(props: Props): JSX.Element {
   const { path, title } = props;
   const classes = useStyles();
   const history = useHistory();
+  const theme = useTheme();
+  const mobile = useMediaQuery(theme.breakpoints.down("xs"));
 
   return (
     <Button
@@ -39,7 +42,7 @@ export default function ButtonFilled(props: Props): JSX.Element {
       className={classes.button}
       onClick={() => path && history.push(path)}
     >
-      <Typography variant="h6">{title}</Typography>
+      <Typography variant={mobile ? "h5" : "h6"}>{title}</Typography>
     </Button>
   );
 }

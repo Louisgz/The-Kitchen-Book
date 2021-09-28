@@ -2,13 +2,13 @@ import React from "react";
 import Navbar from "../Templates/Navbar/Navbar";
 import {
   makeStyles,
-  // useTheme,
+  useTheme,
   createStyles,
-  // Theme
+  Theme,
 } from "@material-ui/core/styles";
 // import { useHistory } from "react-router-dom";
 import Fade from "@material-ui/core/Fade";
-// import useMediaQuery from "@material-ui/core/useMediaQuery";
+import useMediaQuery from "@material-ui/core/useMediaQuery";
 import { Grid, Box, Typography } from "@material-ui/core";
 // import { Fire } from "../../services";
 import ButtonFilled from "../Templates/Buttons/ButtonFilled";
@@ -24,14 +24,16 @@ import { ReactComponent as IceCream } from "images/Accueil/Icecream.svg";
 import { ReactComponent as SaladIcon } from "images/Accueil/salad_icon.svg";
 import { ReactComponent as DishIcon } from "images/Accueil/dish_icon.svg";
 
-const useStyles = makeStyles(() =>
-  // theme: Theme
+const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     homeScreen: {
       maxWidth: 1300,
       margin: "auto",
       paddingTop: "5rem",
       position: "relative",
+      [theme.breakpoints.down("sm")]: {
+        paddingTop: "3rem",
+      },
     },
     smallCard: {
       "& $icon": {
@@ -50,9 +52,9 @@ const useStyles = makeStyles(() =>
 
 const HomeScreen = (): JSX.Element => {
   const classes = useStyles();
-  // const theme = useTheme();
+  const theme = useTheme();
   // const history = useHistory();
-  // const mobile = useMediaQuery(theme.breakpoints.down("xs"));
+  const mobile = useMediaQuery(theme.breakpoints.down("xs"));
 
   return (
     <Fade in timeout={500}>
@@ -74,13 +76,23 @@ const HomeScreen = (): JSX.Element => {
                 <Typography variant="h1" component="span">
                   <Box
                     fontWeight={600}
-                    style={{ marginTop: "1rem", maxWidth: "600px" }}
+                    style={{
+                      marginTop: "1rem",
+                      maxWidth: "600px",
+                      color: mobile ? "white" : "inherit",
+                    }}
                   >
                     Votre site de recettes de cuisine favori !
                   </Box>
                 </Typography>
                 <Typography variant="h5" component="span">
-                  <Box style={{ marginTop: "2rem", maxWidth: "350px" }}>
+                  <Box
+                    style={{
+                      marginTop: "2rem",
+                      maxWidth: "350px",
+                      color: mobile ? "white" : "inherit",
+                    }}
+                  >
                     Vous retrouverez ici nos meilleures recettes, sélectionnées
                     rien que pour vous !
                   </Box>
@@ -97,38 +109,69 @@ const HomeScreen = (): JSX.Element => {
                 zIndex="-1"
                 style={{ top: 0, right: 0 }}
               >
-                <img src={HomeGeometric1} alt="" />
+                <img src={HomeGeometric1} alt="Fond géometric orange" />
               </Box>
-              <Box width="100%" color="white">
-                <img src={Plats_veggie} alt="" />
+              <Box
+                width="100%"
+                color="white"
+                display="flex"
+                justifyContent="center"
+              >
+                <img
+                  src={Plats_veggie}
+                  alt="Plat veggie"
+                  style={{
+                    maxWidth: !mobile ? "40vw" : "80vw",
+                    marginTop: mobile ? "3rem" : "0",
+                  }}
+                />
               </Box>
             </Grid>
             <Grid item xs={12}>
               <Box
                 display="flex"
                 justifyContent="space-around"
+                alignItems="center"
                 width="100%"
-                maxWidth="900px"
+                height="100%"
+                flexWrap="wrap"
+                maxWidth={mobile ? "90vw" : "900px"}
                 margin="auto"
-                marginTop="10rem"
+                marginTop={mobile ? "5rem" : "5vw"}
+                marginBottom={mobile ? "5rem" : "5vw"}
               >
                 <SmallCard
                   title="Entrées"
                   path="/recipes?q=entree"
                   classe={classes.smallCard}
-                  Icon={<SaladIcon className={classes.icon} />}
+                  Icon={
+                    <SaladIcon
+                      className={classes.icon}
+                      fontSize={mobile ? "small" : "default"}
+                    />
+                  }
                 />
                 <SmallCard
                   title="Plats"
                   path="/recipes?q=plat"
                   classe={classes.smallCard}
-                  Icon={<DishIcon className={classes.icon} />}
+                  Icon={
+                    <DishIcon
+                      className={classes.icon}
+                      fontSize={mobile ? "small" : "default"}
+                    />
+                  }
                 />
                 <SmallCard
                   title="Desserts"
                   path="/recipes?q=dessert"
                   classe={classes.smallCard}
-                  Icon={<IceCream className={classes.icon} />}
+                  Icon={
+                    <IceCream
+                      className={classes.icon}
+                      fontSize={mobile ? "small" : "default"}
+                    />
+                  }
                 />
               </Box>
             </Grid>
@@ -148,7 +191,13 @@ const HomeScreen = (): JSX.Element => {
                 zIndex="-1"
                 style={{ top: 0, left: 0 }}
               >
-                <img src={HomeGeometric2} alt="" />
+                <img
+                  src={HomeGeometric2}
+                  alt="Background Géometric 2"
+                  style={{
+                    width: mobile ? "230%" : "inherit",
+                  }}
+                />
               </Box>
               <Box
                 width="100%"
@@ -156,17 +205,29 @@ const HomeScreen = (): JSX.Element => {
                 display="flex"
                 justifyContent="center"
               >
-                <img src={Plats_veggie} alt="" />
+                <img
+                  src={Plats_veggie}
+                  alt="Plat veggie 2"
+                  style={{
+                    maxWidth: !mobile ? "40vw" : "80vw",
+                    marginTop: mobile ? "3rem" : "0",
+                  }}
+                />
               </Box>
             </Grid>
-            <Grid item xs={12} sm={6} style={{ paddingBottom: "15rem" }}>
+            <Grid
+              item
+              xs={12}
+              sm={6}
+              style={{ paddingBottom: mobile ? "5rem" : "15rem" }}
+            >
               <Box
                 display="flex"
                 flexDirection="column"
                 justifyContent="center"
                 alignItems="flex-start"
                 paddingLeft="2rem"
-                paddingTop="10rem"
+                paddingTop={mobile ? "3rem" : "10rem"}
               >
                 <Typography variant="h1" component="span">
                   <Box
@@ -209,10 +270,11 @@ const HomeScreen = (): JSX.Element => {
                 <Box
                   width="80%"
                   display="flex"
-                  justifyContent="space-between"
+                  justifyContent={mobile ? "center" : "space-between"}
                   margin="auto"
+                  flexWrap="wrap"
                 >
-                  <Box width="28%">
+                  <Box width={mobile ? "90%" : "28%"}>
                     <RecipePreview
                       title="test"
                       difficulty={4}
@@ -221,7 +283,10 @@ const HomeScreen = (): JSX.Element => {
                       orange
                     />
                   </Box>
-                  <Box width="28%">
+                  <Box
+                    width={mobile ? "90%" : "28%"}
+                    marginTop={mobile ? "2rem" : "0"}
+                  >
                     <RecipePreview
                       title="test"
                       difficulty={4}
@@ -230,7 +295,10 @@ const HomeScreen = (): JSX.Element => {
                       orange
                     />
                   </Box>
-                  <Box width="28%">
+                  <Box
+                    width={mobile ? "90%" : "28%"}
+                    marginTop={mobile ? "2rem" : "0"}
+                  >
                     <RecipePreview
                       title="test"
                       difficulty={4}

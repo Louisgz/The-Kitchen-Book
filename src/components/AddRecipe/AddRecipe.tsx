@@ -185,8 +185,8 @@ const AddRecipe = () => {
           setPictureHasChanged(false);
         }
       } else {
-        makeAlert("Merci de rentrer une belle image !", "error");
-        fieldsFilled = false;
+        // makeAlert("Merci de rentrer une belle image !", "error");
+        // fieldsFilled = false;
       }
 
       if (title === "" || title === " ") {
@@ -393,7 +393,7 @@ const AddRecipe = () => {
                   component="legend"
                   style={{ margin: "1rem 0 .5rem" }}
                 >
-                  Image de la recette* :
+                  Image de la recette :
                 </FormLabel>
                 <div className="flex-row">
                   <div className="input-preview">
