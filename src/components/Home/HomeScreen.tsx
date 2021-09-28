@@ -63,7 +63,7 @@ const HomeScreen = (): JSX.Element => {
           <Navbar />
         </Grid>
         <Grid container className={classes.homeScreen}>
-          <Particles />
+          {!mobile && <Particles />}
           <Grid container item xs={12}>
             <Grid item xs={12} sm={7}>
               <Box
