@@ -1,5 +1,13 @@
-import React from "react";
-import { AppBar, Toolbar, Container, MenuItem, Menu } from "@material-ui/core";
+/* eslint-disable indent */
+import React, { useState } from "react";
+import {
+  AppBar,
+  Toolbar,
+  Container,
+  MenuItem,
+  Menu,
+  Modal,
+} from "@material-ui/core";
 import {
   fade,
   makeStyles,
@@ -19,6 +27,8 @@ import Logo from "../../../images/Misc/Logo.svg";
 import AddCircleOutlineIcon from "@material-ui/icons/AddCircleOutline";
 import LeftDrawer from "./LeftDrawer";
 import clsx from "clsx";
+import Login from "./Login";
+import { option } from "../../../Types/Login";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -122,13 +132,16 @@ const useStyles = makeStyles((theme: Theme) =>
       "&>div.MuiPaper-root": {
         padding: ".5rem",
 
-        "&>ul>li": {
-          fontWeight: 600,
-          color: theme.palette.primary.main,
-          fontSize: ".9rem",
-          paddingRight: "2rem",
-          "&:hover": {
-            backgroundColor: "#ecf0f8",
+        "&>ul": {
+          padding: "0",
+          "&>li": {
+            fontWeight: 600,
+            color: theme.palette.primary.main,
+            fontSize: ".9rem",
+            paddingRight: "2rem",
+            "&:hover": {
+              backgroundColor: "#ecf0f8",
+            },
           },
         },
       },
@@ -146,9 +159,12 @@ const Navbar = (props: Props): JSX.Element => {
   const history = useHistory();
   const mobile = useMediaQuery(theme.breakpoints.down("xs"));
   const { transparent } = props;
+  const [user, setUser] = useState(null);
+  const [loginOpen, setLoginOpen] = useState(false);
+  const [option, setOption] = useState<option>("login");
 
   //Drawer Account
-  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
 
   // const promptLogout = () => {
@@ -249,21 +265,49 @@ const Navbar = (props: Props): JSX.Element => {
                   >
                     <MenuItem
                       onClick={() => {
-                        handleClose();
-                        history.push("/account");
+                        user
+                          ? (handleClose(), history.push("/account"))
+                          : (handleClose(),
+                            setOption("login"),
+                            setLoginOpen(true));
                       }}
                     >
-                      Mon compte
+                      {user ? "Mon compte" : "Se connecter"}
                     </MenuItem>
                     <MenuItem
                       onClick={() => {
-                        handleClose();
+                        user
+                          ? handleClose()
+                          : (handleClose(),
+                            setOption("signup"),
+                            setLoginOpen(true));
                       }}
                     >
-                      Déconnexion
+                      {user ? "Déconnexion" : "S'inscrire"}
                     </MenuItem>
                   </Menu>
                   <LeftDrawer />
+                  <Modal
+                    open={loginOpen}
+                    onClose={() => setLoginOpen(false)}
+                    aria-labelledby="modal-modal-title"
+                    aria-describedby="modal-modal-description"
+                  >
+                    <Box
+                      width="100vw"
+                      height="100vh"
+                      display="flex"
+                      justifyContent="center"
+                      alignItems="center"
+                      style={{ pointerEvents: "none" }}
+                    >
+                      <Login
+                        setOption={setOption}
+                        option={option}
+                        handleClose={() => setLoginOpen(false)}
+                      />
+                    </Box>
+                  </Modal>
                 </Box>
               </Container>
             </Toolbar>

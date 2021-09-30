@@ -23,13 +23,17 @@ const useStyles = makeStyles(() =>
 );
 
 interface Props {
-  path: string;
+  path?: string;
   title: string;
   shadow?: boolean;
+  onClick?: () => void;
+  margin?: string;
+  fullWidth?: boolean;
+  onKeyDown?: (e: any) => void;
 }
 
 export default function ButtonFilled(props: Props): JSX.Element {
-  const { path, title } = props;
+  const { path, title, shadow, onClick, margin, fullWidth, onKeyDown } = props;
   const classes = useStyles();
   const history = useHistory();
   const theme = useTheme();
@@ -40,7 +44,14 @@ export default function ButtonFilled(props: Props): JSX.Element {
       variant="contained"
       color="primary"
       className={classes.button}
-      onClick={() => path && history.push(path)}
+      onClick={() => (path ? history.push(path) : onClick ? onClick() : "")}
+      style={{
+        margin: margin || "inherit auto",
+        width: fullWidth ? "100%" : "fit-content",
+      }}
+      onKeyDown={(e: any) => {
+        onKeyDown ? onKeyDown(e) : "";
+      }}
     >
       <Typography variant={mobile ? "h5" : "h6"}>{title}</Typography>
     </Button>

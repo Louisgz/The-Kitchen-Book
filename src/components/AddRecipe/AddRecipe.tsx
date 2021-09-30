@@ -25,6 +25,7 @@ import CustomizedRatings from "./CustomizedRatings";
 import Navbar from "../Templates/Navbar/Navbar";
 import FormControl from "@material-ui/core/FormControl";
 import FiltersInput from "./FiltersInput";
+import ButtonFilled from "../Templates/Buttons/ButtonFilled";
 
 // Import images
 import fond_pizza from "../../images/Misc/fond_pizza.jpg";
@@ -157,6 +158,12 @@ const AddRecipe = () => {
   useEffect(() => {
     console.log(ingredients);
   }, [ingredients]);
+
+  const onPressEnterKey = (e: any) => {
+    if (e.keyCode === 13) {
+      saveInfos();
+    }
+  };
 
   const saveInfos = async () => {
     try {
@@ -563,19 +570,12 @@ const AddRecipe = () => {
                   setRecipe(filteredArray);
                 }}
               />
-              <Button
-                variant="contained"
-                color="primary"
+              <ButtonFilled
                 onClick={saveInfos}
-                style={{ marginTop: "1rem" }}
-                onKeyDown={(e) => {
-                  if (e.keyCode === 13) {
-                    saveInfos();
-                  }
-                }}
-              >
-                Envoyer
-              </Button>
+                margin="1rem 0 0"
+                onKeyDown={onPressEnterKey}
+                title="Envoyer"
+              />
             </form>
             <Box position="fixed" bottom="10%" left="5%">
               {alertText !== "" && alertText !== " " && (
