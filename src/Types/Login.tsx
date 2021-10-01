@@ -1,1 +1,1 @@
-export type option = "login" | "signup";
+export type option = "login" | "sign-up";

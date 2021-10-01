@@ -279,7 +279,7 @@ const Navbar = (props: Props): JSX.Element => {
                         user
                           ? handleClose()
                           : (handleClose(),
-                            setOption("signup"),
+                            setOption("sign-up"),
                             setLoginOpen(true));
                       }}
                     >
