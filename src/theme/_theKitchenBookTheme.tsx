@@ -112,5 +112,10 @@ export const theme = createMuiTheme({
         },
       },
     },
+    MuiStepIcon: {
+      text: {
+        fill: "white",
+      },
+    },
   },
 });

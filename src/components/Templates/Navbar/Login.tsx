@@ -1,58 +1,58 @@
 /* eslint-disable indent */
 import React, { useState } from "react";
-import clsx from "clsx";
+import { useSelector, useDispatch } from "react-redux";
 import {
   Typography,
   TextField,
-  FormLabel,
   OutlinedInput,
   InputAdornment,
   IconButton,
+  Stepper,
+  Step,
+  StepLabel,
 } from "@material-ui/core";
+import { Fire } from "services";
 import {
-  fade,
   makeStyles,
-  Theme,
+  // Theme,
   useTheme,
   createStyles,
 } from "@material-ui/core/styles";
 import CloseRoundedIcon from "@material-ui/icons/CloseRounded";
-import { useHistory } from "react-router-dom";
-import Fade from "@material-ui/core/Fade";
 import ButtonFilled from "../Buttons/ButtonFilled";
-import useMediaQuery from "@material-ui/core/useMediaQuery";
 import Box from "@material-ui/core/Box";
-import InputBase from "@material-ui/core/InputBase";
 import Logo from "../../../images/Misc/Logo.svg";
-import AddCircleOutlineIcon from "@material-ui/icons/AddCircleOutline";
 import VisibilityIcon from "@material-ui/icons/Visibility";
 import VisibilityOffIcon from "@material-ui/icons/VisibilityOff";
-import LeftDrawer from "./LeftDrawer";
 
 import { option } from "../../../Types/Login";
 
-const useStyles = makeStyles((theme: Theme) =>
-  createStyles({
-    card: {
-      pointerEvents: "all",
-      background: "white",
-      padding: "1rem ",
-      maxWidth: "500px",
-      width: "95vw",
-      borderRadius: 9,
-      display: "flex",
-      flexDirection: "column",
-      justifyContent: "center",
-      alignItems: "center",
-    },
-    passwordInput: {
-      "&>.MuiOutlinedInput-input": {
-        paddingTop: "10.5px",
-        paddingBottom: "10.5px",
+const useStyles = makeStyles(
+  // (theme: Theme)
+  () =>
+    createStyles({
+      card: {
+        pointerEvents: "all",
+        background: "white",
+        padding: "1rem ",
+        maxWidth: "500px",
+        width: "95vw",
+        borderRadius: 9,
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "center",
+        alignItems: "center",
       },
-    },
-  })
+      passwordInput: {
+        "&>.MuiOutlinedInput-input": {
+          paddingTop: "10.5px",
+          paddingBottom: "10.5px",
+        },
+      },
+    })
 );
+
+const steps = ["étape 1", "étape 2"];
 
 type LoginProps = {
   option: option;
@@ -75,6 +75,7 @@ type ValuesSignup = {
 
 export default function Login(props: LoginProps) {
   const theme = useTheme();
+  const [loading, setLoading] = React.useState(false);
   const classes = useStyles();
   const { option, setOption, handleClose } = props;
   const [step, setStep] = useState<1 | 2>(1);
@@ -90,9 +91,17 @@ export default function Login(props: LoginProps) {
     phone: "",
     showPassword: false,
   });
+  const dispatch = useDispatch();
+  const [message, setMessage] = React.useState<string>("");
+  const [typeMessage, setTypeMessage] = useState<"error" | "success" | "info">(
+    "error"
+  );
 
   const nextStep = () => {
     setStep(2);
+  };
+  const previousStep = () => {
+    setStep(1);
   };
 
   const handleLogin = (categ: "username" | "password", value: string) => {
@@ -117,6 +126,72 @@ export default function Login(props: LoginProps) {
       : setValuesSignup((prev) => {
           return { ...prev, showPassword: !prev.showPassword };
         });
+  };
+
+  const showError = (errorMessage: string) => {
+    setTypeMessage("error");
+    setMessage(errorMessage);
+  };
+
+  const register = async () => {
+    const { email, username, password, phone } = valuesSignup;
+    // const { source } = document.location
+    if (!email?.trim().length) {
+      showError("Veuillez saisir votre email de connexion");
+      return;
+    } else if (!username?.trim().length) {
+      showError("Veuillez saisir votre pseudo");
+      return;
+    }
+
+    setLoading(true);
+    try {
+      dispatch(
+        saveInfo({
+          email: email.trim(),
+          username: username.trim(),
+          phone: phone || "Non renseigné",
+        })
+      );
+      await Fire.auth()
+        .createUserWithEmailAndPassword(email, password)
+        .then(() => {
+          console.log("registered");
+          setTypeMessage("success");
+          setMessage("Votre compte a bien été créé !");
+        });
+      // history.push('/account')
+    } catch (err) {
+      console.log(err.code);
+      switch (err.code) {
+        case "auth/email-already-in-use":
+          showError("L'email entré est déjà utilisé. Connectez-vous.");
+          break;
+
+        case "auth/invalid-password":
+          showError("Identifiants invalides");
+          break;
+
+        case "auth/user-not-found":
+          showError("Identifiants invalides");
+          break;
+
+        case "auth/invalid-email":
+          showError("L'email entré est invalide");
+          break;
+
+        case "auth/weak-password":
+          showError("Mot de passe trop faible");
+          break;
+
+        default:
+          showError("Une erreur est survenue");
+          break;
+      }
+      // handleSubmit();
+    }
+
+    setLoading(false);
   };
 
   React.useEffect(() => {
@@ -207,6 +282,18 @@ export default function Login(props: LoginProps) {
         </Box>
       ) : (
         <Box display="flex" flexDirection="column" width="90%" marginTop="1rem">
+          <Stepper activeStep={step - 1} alternativeLabel>
+            {steps.map((label: string, index: number) => (
+              <Step key={label}>
+                <StepLabel
+                  onClick={() => (index === 1 ? nextStep() : previousStep())}
+                  style={{ cursor: "pointer", color: "white !important" }}
+                >
+                  {label}
+                </StepLabel>
+              </Step>
+            ))}
+          </Stepper>
           {step === 1 ? (
             <>
               <Typography
