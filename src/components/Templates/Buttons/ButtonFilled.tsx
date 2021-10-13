@@ -30,10 +30,20 @@ interface Props {
   margin?: string;
   fullWidth?: boolean;
   onKeyDown?: (e: any) => void;
+  disabled?: boolean;
 }
 
 export default function ButtonFilled(props: Props): JSX.Element {
-  const { path, title, shadow, onClick, margin, fullWidth, onKeyDown } = props;
+  const {
+    path,
+    title,
+    shadow,
+    onClick,
+    margin,
+    fullWidth,
+    onKeyDown,
+    disabled,
+  } = props;
   const classes = useStyles();
   const history = useHistory();
   const theme = useTheme();
@@ -41,6 +51,7 @@ export default function ButtonFilled(props: Props): JSX.Element {
 
   return (
     <Button
+      disabled={disabled}
       variant="contained"
       color="primary"
       className={classes.button}

@@ -1,7 +1,7 @@
 import firebase from "firebase/app";
 import "firebase/firestore";
 import "@firebase/storage";
-import "@firebase/messaging";
+import "firebase/auth";
 
 export default class Fire {
   // Initialize Firebase
@@ -35,6 +35,12 @@ export default class Fire {
   // Retrieve base storage
   static storage() {
     return firebase.storage();
+  }
+
+  static providers() {
+    return {
+      google: new firebase.auth.GoogleAuthProvider(),
+    };
   }
 
   // Reauth

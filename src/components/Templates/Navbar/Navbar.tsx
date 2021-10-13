@@ -29,6 +29,7 @@ import LeftDrawer from "./LeftDrawer";
 import clsx from "clsx";
 import Login from "./Login";
 import { option } from "../../../Types/Login";
+import { Fire } from "services";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -183,6 +184,14 @@ const Navbar = (props: Props): JSX.Element => {
     setAnchorEl(null);
   };
 
+  const handleLogout = () => {
+    Fire.auth()
+      .signOut()
+      .then(() => {
+        console.log("log out");
+      });
+  };
+
   return (
     <Container className={classes.outsideContainer} maxWidth={false}>
       <Fade in={true} timeout={500}>
@@ -265,25 +274,25 @@ const Navbar = (props: Props): JSX.Element => {
                   >
                     <MenuItem
                       onClick={() => {
-                        user
+                        Fire.auth().currentUser
                           ? (handleClose(), history.push("/account"))
                           : (handleClose(),
                             setOption("login"),
                             setLoginOpen(true));
                       }}
                     >
-                      {user ? "Mon compte" : "Se connecter"}
+                      {Fire.auth().currentUser ? "Mon compte" : "Se connecter"}
                     </MenuItem>
                     <MenuItem
                       onClick={() => {
-                        user
-                          ? handleClose()
+                        Fire.auth().currentUser
+                          ? (handleLogout(), handleClose())
                           : (handleClose(),
                             setOption("sign-up"),
                             setLoginOpen(true));
                       }}
                     >
-                      {user ? "Déconnexion" : "S'inscrire"}
+                      {Fire.auth().currentUser ? "Déconnexion" : "S'inscrire"}
                     </MenuItem>
                   </Menu>
                   <LeftDrawer />
@@ -304,6 +313,7 @@ const Navbar = (props: Props): JSX.Element => {
                       <Login
                         setOption={setOption}
                         option={option}
+                        closeCard={() => setLoginOpen(false)}
                         handleClose={() => setLoginOpen(false)}
                       />
                     </Box>

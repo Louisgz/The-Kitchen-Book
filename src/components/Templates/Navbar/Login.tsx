@@ -1,6 +1,6 @@
 /* eslint-disable indent */
 import React, { useState } from "react";
-import { useSelector, useDispatch } from "react-redux";
+// import { useSelector, useDispatch } from "react-redux";
 import {
   Typography,
   TextField,
@@ -11,6 +11,7 @@ import {
   Step,
   StepLabel,
 } from "@material-ui/core";
+import { useHistory } from "react-router-dom";
 import { Fire } from "services";
 import {
   makeStyles,
@@ -24,6 +25,7 @@ import Box from "@material-ui/core/Box";
 import Logo from "../../../images/Misc/Logo.svg";
 import VisibilityIcon from "@material-ui/icons/Visibility";
 import VisibilityOffIcon from "@material-ui/icons/VisibilityOff";
+import Alert from "@material-ui/lab/Alert";
 
 import { option } from "../../../Types/Login";
 
@@ -58,10 +60,11 @@ type LoginProps = {
   option: option;
   setOption: (option: option) => void;
   handleClose: () => void;
+  closeCard: () => void;
 };
 
 type ValuesLogin = {
-  username: string;
+  email: string;
   password: string;
   showPassword: boolean;
 };
@@ -77,10 +80,11 @@ export default function Login(props: LoginProps) {
   const theme = useTheme();
   const [loading, setLoading] = React.useState(false);
   const classes = useStyles();
-  const { option, setOption, handleClose } = props;
+  const { option, setOption, handleClose, closeCard } = props;
   const [step, setStep] = useState<1 | 2>(1);
+  const history = useHistory();
   const [valuesLogin, setValuesLogin] = useState<ValuesLogin>({
-    username: "",
+    email: "",
     password: "",
     showPassword: false,
   });
@@ -91,20 +95,125 @@ export default function Login(props: LoginProps) {
     phone: "",
     showPassword: false,
   });
-  const dispatch = useDispatch();
+  const [registering, setRegistering] = useState(false);
+  const [loginIn, setLoginIn] = useState(false);
+  // const dispatch = useDispatch();
   const [message, setMessage] = React.useState<string>("");
   const [typeMessage, setTypeMessage] = useState<"error" | "success" | "info">(
     "error"
   );
 
-  const nextStep = () => {
-    setStep(2);
-  };
-  const previousStep = () => {
-    setStep(1);
+  React.useEffect(() => {
+    console.log(loginIn);
+    console.log(Fire.auth().currentUser);
+  }, [loginIn]);
+
+  const login = async () => {
+    console.log("login in...");
+    const { email, password } = valuesLogin;
+
+    if (!email?.trim().length) {
+      handleMessage("error", "Veuillez saisir votre email de connexion");
+      return;
+    }
+    if (!password?.trim().length) {
+      handleMessage("error", "Veuillez saisir votre mot de passe");
+      return;
+    }
+
+    setLoginIn(true);
+    try {
+      await Fire.auth()
+        .signInWithEmailAndPassword(email, password)
+        .then((user) => {
+          console.log("logged in");
+          console.log(user);
+        });
+      handleMessage("error", "Veuillez saisir votre email de connexion");
+      closeCard();
+    } catch (err) {
+      console.log(err);
+      switch (err.code) {
+        case "auth/wrong-password":
+          handleMessage("error", "Identifiants invalides");
+          break;
+        case "auth/user-not-found":
+          handleMessage("error", "Identifiants invalides");
+          break;
+        case "auth/invalid-email":
+          handleMessage("error", "L'email entré est invalide");
+          break;
+        default:
+          handleMessage("error", "Une erreur est survenue");
+          break;
+      }
+    }
+    setLoginIn(false);
   };
 
-  const handleLogin = (categ: "username" | "password", value: string) => {
+  const register = async () => {
+    console.log("registering...");
+    const { email, username, password, phone } = valuesSignup;
+    // const { source } = document.location
+    if (!email?.trim().length) {
+      handleMessage("error", "Veuillez saisir votre email de connexion");
+      setStep(1);
+      return;
+    } else if (!username?.trim().length) {
+      handleMessage("error", "Veuillez saisir votre pseudo");
+      setStep(1);
+      return;
+    }
+
+    setLoading(true);
+    try {
+      setRegistering(true);
+      await Fire.auth()
+        .createUserWithEmailAndPassword(email, password)
+        .then((user) => {
+          console.log("registered");
+          console.log(user);
+          setTypeMessage("success");
+          setMessage("Votre compte a bien été créé !");
+        });
+      setRegistering(false);
+      closeCard();
+    } catch (err) {
+      console.log(err);
+      switch (err.code) {
+        case "auth/email-already-in-use":
+          handleMessage(
+            "error",
+            "L'email entré est déjà utilisé. Connectez-vous."
+          );
+          setStep(1);
+          break;
+        case "auth/invalid-password":
+          handleMessage("error", "Identifiants invalides");
+          setStep(1);
+          break;
+        case "auth/user-not-found":
+          handleMessage("error", "Identifiants invalides");
+          setStep(1);
+          break;
+        case "auth/invalid-email":
+          handleMessage("error", "L'email entré est invalide");
+          setStep(1);
+          break;
+        case "auth/weak-password":
+          handleMessage("error", "Mot de passe trop faible");
+          setStep(2);
+          break;
+        default:
+          handleMessage("error", "Une erreur est survenue");
+          break;
+      }
+    }
+
+    setLoading(false);
+  };
+
+  const handleLogin = (categ: "email" | "password", value: string) => {
     setValuesLogin((prev: ValuesLogin) => {
       return { ...prev, [categ]: value };
     });
@@ -128,78 +237,22 @@ export default function Login(props: LoginProps) {
         });
   };
 
-  const showError = (errorMessage: string) => {
-    setTypeMessage("error");
+  const handleMessage = (type: "error" | "success", errorMessage: string) => {
+    console.log(errorMessage);
+    setTypeMessage(type);
     setMessage(errorMessage);
+
+    setTimeout(() => {
+      setMessage("");
+    }, 3500);
   };
 
-  const register = async () => {
-    const { email, username, password, phone } = valuesSignup;
-    // const { source } = document.location
-    if (!email?.trim().length) {
-      showError("Veuillez saisir votre email de connexion");
-      return;
-    } else if (!username?.trim().length) {
-      showError("Veuillez saisir votre pseudo");
-      return;
-    }
-
-    setLoading(true);
-    try {
-      dispatch(
-        saveInfo({
-          email: email.trim(),
-          username: username.trim(),
-          phone: phone || "Non renseigné",
-        })
-      );
-      await Fire.auth()
-        .createUserWithEmailAndPassword(email, password)
-        .then(() => {
-          console.log("registered");
-          setTypeMessage("success");
-          setMessage("Votre compte a bien été créé !");
-        });
-      // history.push('/account')
-    } catch (err) {
-      console.log(err.code);
-      switch (err.code) {
-        case "auth/email-already-in-use":
-          showError("L'email entré est déjà utilisé. Connectez-vous.");
-          break;
-
-        case "auth/invalid-password":
-          showError("Identifiants invalides");
-          break;
-
-        case "auth/user-not-found":
-          showError("Identifiants invalides");
-          break;
-
-        case "auth/invalid-email":
-          showError("L'email entré est invalide");
-          break;
-
-        case "auth/weak-password":
-          showError("Mot de passe trop faible");
-          break;
-
-        default:
-          showError("Une erreur est survenue");
-          break;
-      }
-      // handleSubmit();
-    }
-
-    setLoading(false);
-  };
-
-  React.useEffect(() => {
-    console.log("values login :");
-    console.log(valuesLogin);
-    console.log("values signup :");
-    console.log(valuesSignup);
-  }, [valuesLogin, valuesSignup]);
+  // React.useEffect(() => {
+  //   console.log("values login :");
+  //   console.log(valuesLogin);
+  //   console.log("values signup :");
+  //   console.log(valuesSignup);
+  // }, [valuesLogin, valuesSignup]);
 
   return (
     <Box className={classes.card}>
@@ -244,8 +297,9 @@ export default function Login(props: LoginProps) {
           <TextField
             variant="outlined"
             size="small"
-            value={valuesLogin.username}
-            onChange={(e) => handleLogin("username", e.target.value)}
+            type="email"
+            value={valuesLogin.email}
+            onChange={(e) => handleLogin("email", e.target.value)}
           />
           <Typography
             variant="body1"
@@ -274,10 +328,16 @@ export default function Login(props: LoginProps) {
               </InputAdornment>
             }
           />
+          <Box marginTop={message ? "1rem" : "0"}>
+            {message !== "" && message !== " " && (
+              <Alert severity={typeMessage}>{message}</Alert>
+            )}
+          </Box>
           <ButtonFilled
+            disabled={loginIn}
             margin="2rem auto 0 "
             title={"Je me connecte"}
-            onClick={() => console.log("login")}
+            onClick={() => login()}
           />
         </Box>
       ) : (
@@ -286,7 +346,7 @@ export default function Login(props: LoginProps) {
             {steps.map((label: string, index: number) => (
               <Step key={label}>
                 <StepLabel
-                  onClick={() => (index === 1 ? nextStep() : previousStep())}
+                  onClick={() => (index === 1 ? setStep(2) : setStep(1))}
                   style={{ cursor: "pointer", color: "white !important" }}
                 >
                   {label}
@@ -308,7 +368,10 @@ export default function Login(props: LoginProps) {
                 variant="outlined"
                 size="small"
                 value={valuesSignup.email}
+                type="email"
                 onChange={(e) => handleSignup("email", e.target.value)}
+                autoComplete="email"
+                id="signupMail"
               />
               <Typography
                 variant="body1"
@@ -320,9 +383,12 @@ export default function Login(props: LoginProps) {
               <TextField
                 variant="outlined"
                 size="small"
+                type="text"
                 placeholder="PhiphiCuisinier78"
                 value={valuesSignup.username}
                 onChange={(e) => handleSignup("username", e.target.value)}
+                autoComplete="nickname"
+                id="signupUsername"
               />
             </>
           ) : (
@@ -335,13 +401,16 @@ export default function Login(props: LoginProps) {
                 Ton numéro de téléphone
               </Typography>
               <TextField
-                placeholder="Exemple : 0623456789"
+                placeholder="Exemple : 0612345678"
                 variant="outlined"
                 size="small"
+                type="tel"
+                autoComplete="tel-national"
                 value={valuesSignup.phone}
                 onChange={(e) =>
                   handleSignup("phone", e.target.value.toString())
                 }
+                id="signupPhone"
               />
               <Typography
                 variant="body1"
@@ -369,15 +438,22 @@ export default function Login(props: LoginProps) {
                     </IconButton>
                   </InputAdornment>
                 }
+                id="signupPassword"
               />
             </>
           )}
+          <Box marginTop={message ? "1rem" : "0"}>
+            {message !== "" && message !== " " && (
+              <Alert severity={typeMessage}>{message}</Alert>
+            )}
+          </Box>
           <ButtonFilled
             margin="2rem auto 0 "
             title={step === 1 ? "Etape suivante" : "Je rejoins les cuistos"}
             onClick={() => {
-              step === 1 ? nextStep() : console.log("login");
+              step === 1 ? setStep(2) : register();
             }}
+            disabled={registering}
           />
         </Box>
       )}
