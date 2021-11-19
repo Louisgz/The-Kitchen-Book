@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from "react";
 import { makeStyles, useTheme, createStyles } from "@material-ui/core/styles";
 import Fade from "@material-ui/core/Fade";
+import useMediaQuery from "@material-ui/core/useMediaQuery";
 
 //ALGOLIA
 import algoliasearch from "algoliasearch/lite";
@@ -43,6 +44,7 @@ export default function RecipesPage(): JSX.Element {
   const theme = useTheme();
   const [recipes, setRecipes] = useState<RecipeProps[]>([]);
   const query = getQueryParams("q");
+  const mobile = useMediaQuery(theme.breakpoints.down("xs"));
 
   const searchClient = algoliasearch(
     "AZX5076CN4",
@@ -62,7 +64,7 @@ export default function RecipesPage(): JSX.Element {
 
   return (
     <Fade in timeout={500}>
-      <Box width="100vw" height="auto" bgcolor="#fafafa">
+      <Box width="100%" height="auto" minHeight="100vh" bgcolor="#fafafa">
         <Grid item xs={12}>
           <Navbar />
         </Grid>
@@ -72,7 +74,11 @@ export default function RecipesPage(): JSX.Element {
             item
             xs={12}
             spacing={3}
-            style={{ maxWidth: "1050px", margin: "2rem auto 0" }}
+            style={{
+              maxWidth: "1050px",
+              margin: "auto",
+              padding: mobile ? "1rem" : "2rem 0",
+            }}
           >
             <Box
               display="flex"
@@ -82,7 +88,11 @@ export default function RecipesPage(): JSX.Element {
             >
               <Box display="flex" flexDirection="column">
                 <Typography variant="h4">{query}</Typography>
-                <Typography variant="h6" component={"span"}>
+                <Typography
+                  variant="h6"
+                  component={"span"}
+                  style={{ marginTop: ".5rem" }}
+                >
                   <Box color={theme.palette.text.secondary}>
                     {recipes?.length} recettes
                   </Box>
@@ -93,7 +103,7 @@ export default function RecipesPage(): JSX.Element {
                 display="flex"
                 alignItems="center"
               >
-                <FilterListIcon />
+                {/* <FilterListIcon />
                 <Typography
                   variant="h6"
                   component={"span"}
@@ -102,7 +112,7 @@ export default function RecipesPage(): JSX.Element {
                   <Box color={theme.palette.text.secondary} marginLeft=".75rem">
                     Filtrer les résultats
                   </Box>
-                </Typography>
+                </Typography> */}
               </Box>
             </Box>
           </Grid>
@@ -111,7 +121,7 @@ export default function RecipesPage(): JSX.Element {
             item
             xs={12}
             spacing={3}
-            style={{ maxWidth: "1100px", margin: "3rem auto" }}
+            style={{ maxWidth: "1100px", margin: "2rem auto" }}
           >
             {recipes?.map((recipe: RecipeProps) => {
               return (

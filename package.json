@@ -30,6 +30,7 @@
     "eslint-plugin-prettier": "^3.4.0",
     "firebase": "^8.6.1",
     "images": "file:src/images",
+    "moment": "^2.29.1",
     "prettier": "^2.3.2",
     "prettier-eslint-cli": "^5.0.1",
     "react": "^17.0.2",

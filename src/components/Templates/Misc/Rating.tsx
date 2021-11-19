@@ -13,7 +13,6 @@ interface Props {
 
 export default function RatingPreview(props: Props) {
   const { difficulty, transparent, size, orange } = props;
-  console.log(props);
 
   const StyledRating = withStyles({
     iconFilled: {

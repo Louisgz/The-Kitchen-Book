@@ -79,13 +79,20 @@ export default class Fire {
   static async list(ref: any) {
     const arr: any[] = [];
     const snap = await ref.get();
-    snap.forEach((doc: any) => {
-      if (!doc.exists) return null;
-      arr.push({
-        id: doc.id,
-        ...doc.data(),
+    if (snap.size) {
+      snap.forEach((doc: any) => {
+        if (!doc.exists) return null;
+        arr.push({
+          id: doc.id,
+          ...doc.data(),
+        });
       });
-    });
+    } else {
+      arr.push({
+        id: snap.id,
+        ...snap.data(),
+      });
+    }
     return arr;
   }
 

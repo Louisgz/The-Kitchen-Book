@@ -11,4 +11,5 @@ export interface NewItemsProps {
   image: string;
   dateString: string;
   date: Date;
+  id: string;
 }

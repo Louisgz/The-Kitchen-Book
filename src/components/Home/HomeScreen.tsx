@@ -10,11 +10,12 @@ import {
 import Fade from "@material-ui/core/Fade";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 import { Grid, Box, Typography } from "@material-ui/core";
-// import { Fire } from "../../services";
+import { Fire } from "../../services";
 import ButtonFilled from "../Templates/Buttons/ButtonFilled";
 import Particles from "../Templates/Particles/Particles";
 import SmallCard from "../Templates/Cards/SmallCard";
 import RecipePreview from "../Recipes/RecipePreview";
+import { NewItemsProps } from "../../Types/NewItemsProps";
 
 //Images
 import Plats_veggie from "images/Plats/Plats_veggie.png";
@@ -27,13 +28,15 @@ import { ReactComponent as DishIcon } from "images/Accueil/dish_icon.svg";
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     homeScreen: {
-      maxWidth: 1300,
-      margin: "auto",
       paddingTop: "5rem",
       position: "relative",
       [theme.breakpoints.down("sm")]: {
         paddingTop: "3rem",
       },
+    },
+    maxWidth: {
+      maxWidth: 1300,
+      margin: "auto",
     },
     smallCard: {
       "& $icon": {
@@ -55,6 +58,38 @@ const HomeScreen = (): JSX.Element => {
   const theme = useTheme();
   // const history = useHistory();
   const mobile = useMediaQuery(theme.breakpoints.down("xs"));
+  const [recipes, setRecipes] = React.useState<any[]>([]);
+  const [imgGap, setImgGap] = React.useState(0);
+
+  const verifyImgGap = () => {
+    const newGap =
+      window.innerWidth < 1300 ? 0 : -((window.innerWidth - 1300) / 2);
+    setImgGap(newGap);
+  };
+
+  window.addEventListener("resize", () => {
+    verifyImgGap();
+  });
+
+  const getHomepageRecipes = async () => {
+    const RECIPES_ID = [
+      "UxpLXs6oRZSrccLHQAC5",
+      "IC67IgFIrLTCeoKIwERJ",
+      "_ftpqqtynt",
+    ];
+
+    const promises = RECIPES_ID.forEach(async (id) => {
+      const recipeRef = Fire.store().collection("recipes").doc(id);
+      const recipe = await Fire.list(recipeRef);
+      setRecipes((prev: any[]) => [...prev, ...recipe]);
+    });
+    await Promise.all([promises]);
+  };
+
+  React.useEffect(() => {
+    getHomepageRecipes();
+    verifyImgGap();
+  }, []);
 
   return (
     <Fade in timeout={500}>
@@ -64,7 +99,7 @@ const HomeScreen = (): JSX.Element => {
         </Grid>
         <Grid container className={classes.homeScreen}>
           {!mobile && <Particles />}
-          <Grid container item xs={12}>
+          <Grid container item xs={12} className={classes.maxWidth}>
             <Grid item xs={12} sm={7}>
               <Box
                 display="flex"
@@ -107,7 +142,10 @@ const HomeScreen = (): JSX.Element => {
                 position="absolute"
                 minHeight="fit-content"
                 zIndex="-1"
-                style={{ top: 0, right: 0 }}
+                style={{
+                  top: 0,
+                  right: imgGap,
+                }}
               >
                 <img src={HomeGeometric1} alt="Fond géometric orange" />
               </Box>
@@ -178,18 +216,20 @@ const HomeScreen = (): JSX.Element => {
             <Grid
               item
               xs={12}
-              sm={6}
+              sm={5}
               style={{
                 position: "relative",
                 paddingTop: "10rem",
-                overflow: "hidden",
               }}
             >
               <Box
                 position="absolute"
                 minHeight="fit-content"
                 zIndex="-1"
-                style={{ top: 0, left: 0 }}
+                style={{
+                  top: 0,
+                  left: imgGap,
+                }}
               >
                 <img
                   src={HomeGeometric2}
@@ -218,7 +258,7 @@ const HomeScreen = (): JSX.Element => {
             <Grid
               item
               xs={12}
-              sm={6}
+              sm={7}
               style={{ paddingBottom: mobile ? "5rem" : "15rem" }}
             >
               <Box
@@ -248,68 +288,51 @@ const HomeScreen = (): JSX.Element => {
                 </Box>
               </Box>
             </Grid>
-            <Grid item xs={12}>
-              <Box
-                width="100%"
-                height="100%"
-                bgcolor="#FFF9F5"
-                maxWidth="1300px"
-                margin="auto"
-                paddingTop="3rem"
-                paddingBottom="7rem"
-                display="flex"
-                flexDirection="column"
-                justifyContent="center"
-                alignItems="center"
-              >
-                <Typography variant="h2" component="span">
-                  <Box color="#FF5C00" fontWeight={600} marginBottom="3rem">
-                    Nos recettes favorites
-                  </Box>
-                </Typography>
-                <Box
-                  width="80%"
-                  display="flex"
-                  justifyContent={mobile ? "center" : "space-between"}
-                  margin="auto"
-                  flexWrap="wrap"
-                >
-                  <Box width={mobile ? "90%" : "28%"}>
-                    <RecipePreview
-                      title="test"
-                      difficulty={4}
-                      image="https://firebasestorage.googleapis.com/v0/b/the-kitchen-book-41408.appspot.com/o/recipes%2FInsta2_1626379555055.png?alt=media&token=4ace2d17-8ac8-46fb-b34f-9264de9ba4f3"
-                      objectID="eef"
-                      orange
-                    />
-                  </Box>
-                  <Box
-                    width={mobile ? "90%" : "28%"}
-                    marginTop={mobile ? "2rem" : "0"}
-                  >
-                    <RecipePreview
-                      title="test"
-                      difficulty={4}
-                      image="https://firebasestorage.googleapis.com/v0/b/the-kitchen-book-41408.appspot.com/o/recipes%2FInsta2_1626379555055.png?alt=media&token=4ace2d17-8ac8-46fb-b34f-9264de9ba4f3"
-                      objectID="eef"
-                      orange
-                    />
-                  </Box>
-                  <Box
-                    width={mobile ? "90%" : "28%"}
-                    marginTop={mobile ? "2rem" : "0"}
-                  >
-                    <RecipePreview
-                      title="test"
-                      difficulty={4}
-                      image="https://firebasestorage.googleapis.com/v0/b/the-kitchen-book-41408.appspot.com/o/recipes%2FInsta2_1626379555055.png?alt=media&token=4ace2d17-8ac8-46fb-b34f-9264de9ba4f3"
-                      objectID="eef"
-                      orange
-                    />
-                  </Box>
+          </Grid>
+          <Grid item xs={12}>
+            <Box
+              width="100%"
+              height="100%"
+              bgcolor="#FFF9F5"
+              margin="auto"
+              paddingTop="3rem"
+              paddingBottom="7rem"
+              display="flex"
+              flexDirection="column"
+              justifyContent="center"
+              alignItems="center"
+            >
+              <Typography variant="h2" component="span">
+                <Box color="#FF5C00" fontWeight={600} marginBottom="3rem">
+                  Nos recettes favorites
                 </Box>
+              </Typography>
+              <Box
+                width="80%"
+                display="flex"
+                justifyContent={mobile ? "center" : "space-between"}
+                margin="auto"
+                flexWrap="wrap"
+              >
+                {recipes.map(
+                  (recipe, index) =>
+                    index < 3 && (
+                      <Box
+                        width={mobile ? "90%" : "28%"}
+                        key={`home-${recipe.id}`}
+                      >
+                        <RecipePreview
+                          title={recipe.title}
+                          difficulty={recipe.difficulty}
+                          image={recipe.image}
+                          objectID={recipe.id}
+                          orange
+                        />
+                      </Box>
+                    )
+                )}
               </Box>
-            </Grid>
+            </Box>
           </Grid>
         </Grid>
       </>

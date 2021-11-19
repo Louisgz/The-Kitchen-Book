@@ -1,3 +1,4 @@
+/* eslint-disable indent */
 // IMPORT GENERAL
 import React, { useState, useEffect } from "react";
 import { Fire } from "services";
@@ -15,6 +16,7 @@ import ShoppingCartIcon from "@material-ui/icons/ShoppingCart";
 import Button from "@material-ui/core/Button";
 import RemoveIcon from "@material-ui/icons/Remove";
 import AddIcon from "@material-ui/icons/Add";
+import moment from "moment";
 
 // IMPORT COMPONENTS
 import Navbar from "../Templates/Navbar/Navbar";
@@ -46,6 +48,10 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 );
 
+const verifyQuantity = (quantity: any) => {
+  return !isNaN(quantity) && quantity !== 0 && quantity !== "";
+};
+
 export default function RecipePage(props: Props) {
   const [recipe, setRecipe] = useState<any>(null);
   const [portions, setPortions] = useState<number>(recipe?.portions.quantity);
@@ -61,7 +67,10 @@ export default function RecipePage(props: Props) {
   const getRecipeInfos = async (id: string) => {
     const recipeRef = await Fire.store().collection("recipes").doc(id);
     const recipeInfos = await Fire.doc(recipeRef);
-    await console.log(recipeInfos);
+    console.log(recipeInfos);
+    recipeInfos.ingredients.sort();
+    console.log(recipeInfos);
+
     setRecipe(recipeInfos);
   };
 
@@ -75,7 +84,9 @@ export default function RecipePage(props: Props) {
     const time = time1 + time2;
     const hours = Math.floor(time / 60);
     const minutes = time % 60;
-    return `${hours && hours + "h"} ${minutes && minutes + "min"}`;
+    return `${hours !== 0 ? hours + "h" : ""} ${
+      minutes !== 0 ? minutes + "min" : ""
+    }`;
   };
 
   useEffect(() => {
@@ -90,7 +101,7 @@ export default function RecipePage(props: Props) {
 
   return (
     <Fade in timeout={500}>
-      <Box width="100vw" minHeight="100vh" bgcolor="#fafafa">
+      <Box width="100%" minHeight="100vh" bgcolor="#fafafa">
         <Grid item xs={12}>
           <Navbar />
         </Grid>
@@ -196,24 +207,30 @@ export default function RecipePage(props: Props) {
                       marginTop="1rem"
                     >
                       <Typography variant="body1">-</Typography>
+                      {verifyQuantity(ingredient.quantity) && (
+                        <Typography
+                          variant="body1"
+                          style={{
+                            marginLeft: ".75rem",
+                            color: theme.palette.primary.main,
+                          }}
+                        >
+                          {Math.floor(ingredient.quantity * portionCoef) !== 0
+                            ? Math.floor(ingredient.quantity * portionCoef)
+                            : 1}
+                        </Typography>
+                      )}
+                      {!isNaN(ingredient.unit) && ingredient.unit && (
+                        <Typography
+                          variant="body1"
+                          style={{ marginLeft: ".25rem" }}
+                        >
+                          {ingredient.unit}
+                        </Typography>
+                      )}
                       <Typography
                         variant="body1"
-                        style={{
-                          marginLeft: ".75rem",
-                          color: theme.palette.primary.main,
-                        }}
-                      >
-                        {Math.floor(ingredient.quantity * portionCoef) || 1}
-                      </Typography>
-                      <Typography
-                        variant="body1"
-                        style={{ marginLeft: ".25rem" }}
-                      >
-                        {ingredient.unit}
-                      </Typography>
-                      <Typography
-                        variant="body1"
-                        style={{ marginLeft: ".5rem" }}
+                        style={{ marginLeft: ".45rem" }}
                       >
                         {ingredient.name}
                       </Typography>
@@ -231,7 +248,7 @@ export default function RecipePage(props: Props) {
                 <Typography
                   variant="h6"
                   color="primary"
-                  style={{ marginLeft: "1rem" }}
+                  style={{ marginLeft: ".75rem" }}
                 >
                   {totalTime}
                 </Typography>

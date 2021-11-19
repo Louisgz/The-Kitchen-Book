@@ -303,7 +303,7 @@ const Navbar = (props: Props): JSX.Element => {
                     aria-describedby="modal-modal-description"
                   >
                     <Box
-                      width="100vw"
+                      width="100%"
                       height="100vh"
                       display="flex"
                       justifyContent="center"

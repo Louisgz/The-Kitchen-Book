@@ -95,7 +95,7 @@ const AddRecipe = () => {
   const [preparationTime, setPreparationTime] = useState<number>();
   const [preparationTimeHelper, setPreparationTimeHelper] =
     useState<string>("");
-  const [difficulty, setDifficulty] = useState<number>();
+  const [difficulty, setDifficulty] = useState<number>(1);
   const [ingredients, setIngredients] = useState<any>([
     { quantity: "", unit: "", name: "", id: randomID() },
   ]);
@@ -155,10 +155,6 @@ const AddRecipe = () => {
     });
   };
 
-  useEffect(() => {
-    console.log(ingredients);
-  }, [ingredients]);
-
   const onPressEnterKey = (e: any) => {
     if (e.keyCode === 13) {
       saveInfos();
@@ -168,6 +164,7 @@ const AddRecipe = () => {
   const saveInfos = async () => {
     try {
       let fieldsFilled = true;
+      const id = randomID();
       const newDate = new Date();
       const date = newDate.getTime();
       const dd = String(newDate.getDate()).padStart(2, "0");
@@ -263,9 +260,9 @@ const AddRecipe = () => {
           image: image,
           dateString: today,
           date: new Date(),
+          id: id,
         };
-        console.log(item);
-        await recipesCollection.doc().set(item);
+        await recipesCollection.doc(id).set(item);
         makeAlert(
           "Mmmh, votre recette a bien été ajoutée, merci pour votre contribution !",
           "success"
@@ -316,7 +313,8 @@ const AddRecipe = () => {
             onBlur={(e) => {
               setIngredients((prev: any[]) => {
                 const newIngredients = prev;
-                newIngredients[index].quantity = parseInt(e.target.value);
+                if (e.target.value !== "")
+                  newIngredients[index].quantity = parseInt(e.target.value);
                 return newIngredients;
               });
             }}
@@ -343,7 +341,7 @@ const AddRecipe = () => {
         </FormControl>
         <FormControl className={classes.ingredientName}>
           <TextField
-            placeholder="lait"
+            placeholder="de lait"
             margin="normal"
             InputLabelProps={{
               shrink: true,
